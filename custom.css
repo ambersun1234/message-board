@@ -2,18 +2,18 @@
 body {
   padding-top: 50px;
 }
-ul.nav,.jumbotron h1{
+ul.nav,.jumbotron h1 {
   font-family: 'Arvo',courier,serif;
 }
-ul.nav{
+ul.nav {
   font-size: 13px;
 }
-footer{
+footer {
   background-color: #f74c3c;
-  padding-top: 150px;
+  padding-top: 50px;
   padding-bottom: 30px;
 }
-#get-involed{
+#board{
   background-color: #f5f5f5;
 }
 #onemillion{
@@ -91,7 +91,7 @@ footer{
   .jumbotron p{
     padding: 0 10px;
   }
-  #get-involed .col-md-4{
+  #board .col-md-4{
     padding-top: 20px;
     padding-bottom: 20px;
   }
@@ -109,8 +109,5 @@ footer{
   }
   .homepage p{
     font-size: 18px;
-  }
-  footer img{
-    width: 80%;
   }
 }
