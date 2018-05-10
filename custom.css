@@ -19,6 +19,10 @@ footer {
 #onemillion{
   background-color: #ff5511;
 }
+.tool_bar a , .tool_bar ul li {
+    font-size: 20px;
+    font-family: serif;
+}
 .login{
     border-style: solid;
     border-color: #eae8e8;

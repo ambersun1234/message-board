@@ -27,6 +27,7 @@
                 $result = $query->num_rows;
 
                 if ( $result == 1 ) { // mark that the user logged in
+                    $_SESSION['loggedin'] = true;
                     $_SESSION['user'] = $username;
                     header("Location: index.php"); // redirt to index.php
                 }

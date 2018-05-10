@@ -1,3 +1,5 @@
+<?php session_start() ?>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -37,13 +39,11 @@
 
     <body>
         <?php include "statusColumn.php";?>
-
         <div class="jumbotron">
             <div class="container">
                 <h1>Our goal is to inspire <br>Tallahassee to write 1,000,000<br> lines of code_</h1>
                 <p>All over the country people are taking the <strong>HOUR OF CODE</strong> challenge issued by <strong>CODE.org</strong>. Millions of lines of code are being written. In the capital of Florida, Tallahassee, the community is taking the challenge and our goal is to write 1,000,000 lines of code_</p>
-                <p><a class="btn btn-danger btn-lg" href="#" target="_blank" role="button">Learn more &raquo;</a></p>
-                <img src="images/code.png" title="code.org logo" alt="code.org">
+                <br><br><br><br><br><br><br>
             </div>
         </div>
 
