@@ -42,12 +42,12 @@ footer {
     padding: 5px;
     margin-top: 5px;
     margin-bottom: 5px;
-    width: 95%;
+    width: 100%;
     height: 40px;
     font-size: 13px;
 }
 .signUp button[type=submit]{
-    width: 95%;
+    width: 100%;
     height: 30px;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -62,13 +62,11 @@ footer {
     padding-bottom: 15px;
 }
 .login form {
-    padding: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 .login form span , .signUp form span {
     font-weight: bold;
-}
-.login form input , .signUp form input {
-
 }
 .login{
     border-style: solid;
@@ -84,7 +82,7 @@ footer {
     margin-bottom: 5px;
     width: 95%;
     height: 20px;
-    font-size: 17px;
+    font-size: 13px;
 }
 .login button[type=submit]{
     width: 100%;
@@ -93,7 +91,7 @@ footer {
     margin-bottom: 5px;
     padding: 0px;
     border: 0px;
-    font-size: 17px;
+    font-size: 13px;
     background-color: #ff6060;
     color: #ffffff;
 }
@@ -107,6 +105,7 @@ footer {
 }
 .login_new_to_message{
     text-align: center;
+    color: #ffffff;
 }
 .login_error{
     margin: auto;
