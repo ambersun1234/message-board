@@ -57,6 +57,7 @@
 
                             <span>Password</span><br>
                             <input type="password" name="_password" placeholder="Create a password"><br>
+                            <div class="passwordWarn">use at least one letter , one numeral and five characters</div>
                             <button type="submit" class="btn btn-default" name="SUBMIT">Sign up for message-board</button>
                         </form>
                     </div>
