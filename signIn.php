@@ -54,13 +54,13 @@
 
                 <span style="font-weight: bold">Password</span><br>
                 <input type="password" name="_password" size=15><br>
-                <input type="submit" name="SUBMIT" value="Sign in">
+                <button type="submit" class="btn btn-default" name="SUBMIT">Sign in</button>
             </form>
         </div>
         <br>
         <div class="login_new_to">
             <div class="login_new_to_message">
-                New to message-board? <a href="signUp.php">Create an account</a>
+                New to message-board? <br><a href="signUp.php">Create an account</a>
             </div>
         </div>
     </body>

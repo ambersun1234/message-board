@@ -41,11 +41,13 @@ footer {
     height: 25px;
     font-size: 17px;
 }
-.login input[type=submit]{
+.login button[type=submit]{
     width: 100%;
     height: 25px;
     margin-top: 5px;
     margin-bottom: 5px;
+    padding: 0px;
+    border: 0px;
     font-size: 17px;
     background-color: #ff6060;
     color: #ffffff;
@@ -63,7 +65,8 @@ footer {
 }
 .login_error{
     margin: auto;
-    width: 20%;
+    width: 21.5%;
+    text-align: center;
     background: #ff6060;
     color: #ffffff;
 }
