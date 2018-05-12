@@ -49,18 +49,18 @@
 
         <div class="login">
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-                <span style="font-weight: bold">Username</span><br>
-                <input type="text" name="_username" size=15 value="<?php echo $username ?>"><br>
+                <span>Username</span><br>
+                <input type="text" name="_username" value="<?php echo $username ?>"><br>
 
-                <span style="font-weight: bold">Password</span><br>
-                <input type="password" name="_password" size=15><br>
+                <span >Password</span><br>
+                <input type="password" name="_password"><br>
                 <button type="submit" class="btn btn-default" name="SUBMIT">Sign in</button>
             </form>
         </div>
         <br>
         <div class="login_new_to">
             <div class="login_new_to_message">
-                New to message-board? <br><a href="signUp.php">Create an account</a>
+                New to message-board? <br><a href="/index.php#signUp">Create an account</a>
             </div>
         </div>
     </body>

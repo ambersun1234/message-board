@@ -11,7 +11,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse tool_bar">
             <ul class="nav navbar-nav navbar-left">
-                <li><a href="#board">所有看板</a></li> <!--jump to 所有看板-->
+                <li><a href="/index.php#board">所有看板</a></li> <!--jump to 所有看板-->
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php
@@ -31,7 +31,7 @@
                     }
                     else {
                         echo '<li><a href="signIn.php">登入</a></li>';
-                        echo '<li><a href="signUp.php">註冊</a></li>';
+                        echo '<li><a href="/index.php#signUp">註冊</a></li>';
                     }
                 ?>
             </ul>
