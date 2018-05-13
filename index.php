@@ -52,6 +52,7 @@
 
                 checkUsername();
                 checkEmail();
+                checkPassword( $_POST['_password'] );
 
                 if ( checkValid() ) { // auto log in when signUp success
                     $_SESSION['loggedin'] = true;
@@ -80,6 +81,20 @@
                     if ( $result > 0 ) $GLOBALS['emailErr'] = "Email already taken!!<br>";
                 }
             }
+            function checkPassword( $pasw ) {
+                if ( $pasw == "" ) {
+                    $GLOBALS['passwordErr'] = "Password can not be blank!!<br>";
+                    return;
+                }
+                if ( strlen( $pasw ) < 8 ) { // check at least 8 characters
+                    $GLOBALS['passwordErr'] = "Invalid password!!<br>";
+                    return;
+                }
+                if ( !preg_match( '/[A-Za-z]/' , $myString ) && !preg_match( '/[0-9]/', $myString ) ) {
+                    $GLOBALS['passwordErr'] = "Invalid password!!<br>";
+                    return;
+                }
+            }
             function checkValid() {
                 if ( $GLOBALS['usernameErr'] == false && $GLOBALS['passwordErr'] == false && $GLOBALS['emailErr'] == false ) return true;
                 else return false;
@@ -106,7 +121,7 @@
 
                             <span>Password</span><br>
                             <input type="password" name="_password" placeholder="Create a password"><br>
-                            <div class="passwordWarn">use at least one letter , one numeral and five characters</div>
+                            <div class="passwordWarn">use at least one letter , one numeral and six characters</div>
                             <?php if ( $passwordErr != "" ) echo $passwordErr; ?> <!--password need to be valid-->
 
                             <button type="submit" class="btn btn-default" name="SUBMIT">Sign up for message-board</button>
