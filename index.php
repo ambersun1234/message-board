@@ -68,6 +68,7 @@
                     $sql = "select username from account where username = '" . $GLOBALS['username'] . "'";
                     $query = mysqli_query( $con , $sql );
                     $result = $query->num_rows;
+
                     if ( $result > 0 ) $GLOBALS['usernameErr'] = "Username already taken!!<br>";
                 }
             }
@@ -113,16 +114,16 @@
                         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                             <span >Username</span><br>
                             <input type="text" name="_username" placeholder="Pick a username" value="<?php echo $username; ?>"><br>
-                            <?php if ( $usernameErr != "" ) echo $usernameErr; ?> <!--username need to be unique-->
+                            <?php if ( $usernameErr != "" ) echo "<div class='signUPvalid'>" . $usernameErr . "</div>"; ?> <!--username need to be unique-->
 
                             <span>Email</span><br>
                             <input type="text" name="_email" placeholder="you@example.com" value="<?php echo $email; ?>"><br>
-                            <?php if ( $emailErr != "" ) echo $emailErr; ?> <!--email need to be unique-->
+                            <?php if ( $emailErr != "" ) echo "<div class='signUPvalid'>" . $emailErr . "</div>"; ?> <!--email need to be unique-->
 
                             <span>Password</span><br>
                             <input type="password" name="_password" placeholder="Create a password"><br>
                             <div class="passwordWarn">use at least one letter , one numeral and six characters</div>
-                            <?php if ( $passwordErr != "" ) echo $passwordErr; ?> <!--password need to be valid-->
+                            <?php if ( $passwordErr != "" ) echo "<div class='signUPvalid'>" . $passwordErr . "</div>"; ?> <!--password need to be valid-->
 
                             <button type="submit" class="btn btn-default" name="SUBMIT">Sign up for message-board</button>
                         </form>

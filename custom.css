@@ -19,6 +19,9 @@ footer {
 #onemillion{
   background-color: #ff5511;
 }
+.signUPvalid {
+    color: #ff0202;
+}
 .passwordWarn {
     font-size: 13px;
     color: #c6c0c0;
@@ -42,12 +45,12 @@ footer {
     padding: 5px;
     margin-top: 5px;
     margin-bottom: 5px;
-    width: 100%;
+    width: 95%;
     height: 40px;
     font-size: 13px;
 }
 .signUp button[type=submit]{
-    width: 100%;
+    width: 95%;
     height: 30px;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -62,11 +65,13 @@ footer {
     padding-bottom: 15px;
 }
 .login form {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding: 15px;
 }
 .login form span , .signUp form span {
     font-weight: bold;
+}
+.login form input , .signUp form input {
+
 }
 .login{
     border-style: solid;
@@ -82,7 +87,7 @@ footer {
     margin-bottom: 5px;
     width: 95%;
     height: 20px;
-    font-size: 13px;
+    font-size: 17px;
 }
 .login button[type=submit]{
     width: 100%;
@@ -91,7 +96,7 @@ footer {
     margin-bottom: 5px;
     padding: 0px;
     border: 0px;
-    font-size: 13px;
+    font-size: 17px;
     background-color: #ff6060;
     color: #ffffff;
 }
@@ -105,7 +110,6 @@ footer {
 }
 .login_new_to_message{
     text-align: center;
-    color: #ffffff;
 }
 .login_error{
     margin: auto;
