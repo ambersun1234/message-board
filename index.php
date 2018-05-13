@@ -50,6 +50,7 @@
                 $username = $_POST["_username"]; // get data
                 $email = $_POST["_email"]; // get data
 
+                checkUsername();
                 checkEmail();
 
                 if ( checkValid() ) { // auto log in when signUp success
@@ -59,6 +60,15 @@
                 }
 
                 include "disconnectToDB.php";
+            }
+            function checkUsername() {
+                if ( $GLOBALS['username'] == "" ) $GLOBALS['usernameErr'] = "Username can not be blank!!<br>";
+                else {
+                    $sql = "select username from account where username = '" . $GLOBALS['username'] . "'";
+                    $query = mysqli_query( $con , $sql );
+                    $result = $query->num_rows;
+                    if ( $result > 0 ) $GLOBALS['usernameErr'] = "Username already taken!!<br>";
+                }
             }
             function checkEmail() {
                 if ( $GLOBALS['email'] == "" ) $GLOBALS['emailErr'] = "Email can not be blank!!<br>";
