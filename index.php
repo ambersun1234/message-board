@@ -41,7 +41,7 @@
         <?php include "statusColumn.php";?>
 
         <?php // check signUp valid or not and insert into database
-            $usernameErr = $passwordErr = $emailErr = false; // initialize
+            $usernameErr = $passwordErr = $emailErr = ""; // initialize
             $username = $email = ""; // initialize
 
             if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["SUBMIT"] ) ) { // active when submit
@@ -50,7 +50,25 @@
                 $username = $_POST["_username"]; // get data
                 $email = $_POST["_email"]; // get data
 
+                checkEmail();
+
+                if ( checkValid() ) { // auto log in when signUp success
+                    $_SESSION['loggedin'] = true;
+                    $_SESSION['user'] = $username;
+                    header("Location: index.php"); // redirection
+                }
+
                 include "disconnectToDB.php";
+            }
+            function checkEmail() {
+                if ( $GLOBALS['email'] == "" ) $GLOBALS['emailErr'] = "Email can not be blank!!<br>";
+                else if ( !filter_var( $GLOBALS['email'] , FILTER_VALIDATE_EMAIL ) ) $GLOBALS['emailErr'] = "Invalid email format!!<br>";
+                else {
+                    $sql = "select email from account where email = '" . $GLOBALS['email'] . "'";
+                    $query = mysqli_query( $con , $sql );
+                    $result = $query->num_rows;
+                    if ( $result > 0 ) $GLOBALS['emailErr'] = "Email already taken!!<br>";
+                }
             }
             function checkValid() {
                 if ( $GLOBALS['usernameErr'] == false && $GLOBALS['passwordErr'] == false && $GLOBALS['emailErr'] == false ) return true;
@@ -70,17 +88,17 @@
                         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                             <span >Username</span><br>
                             <input type="text" name="_username" placeholder="Pick a username" value="<?php echo $username; ?>"><br>
-                            <?php if ( $usernameErr ) echo "Invalid username!!<br>"; ?> <!--username need to be unique-->
+                            <?php if ( $usernameErr != "" ) echo $usernameErr; ?> <!--username need to be unique-->
 
                             <span>Email</span><br>
                             <input type="text" name="_email" placeholder="you@example.com" value="<?php echo $email; ?>"><br>
-                            <?php if ( $emailErr ) echo "email has already taken!!<br>"; ?> <!--email need to be unique-->
+                            <?php if ( $emailErr != "" ) echo $emailErr; ?> <!--email need to be unique-->
 
                             <span>Password</span><br>
                             <input type="password" name="_password" placeholder="Create a password"><br>
                             <div class="passwordWarn">use at least one letter , one numeral and five characters</div>
-                            <?php if ( $passwordErr ) echo "Invalid password!!<br>"; ?> <!--password need to be valid-->
-                            
+                            <?php if ( $passwordErr != "" ) echo $passwordErr; ?> <!--password need to be valid-->
+
                             <button type="submit" class="btn btn-default" name="SUBMIT">Sign up for message-board</button>
                         </form>
                     </div>
