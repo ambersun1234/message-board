@@ -44,54 +44,63 @@
             $usernameErr = $passwordErr = $emailErr = ""; // initialize
             $username = $email = ""; // initialize
 
-            if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["SUBMIT"] ) ) { // active when submit
+            if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["SUBMIT_signup"] ) ) { // active when submit
                 include "connectToDB.php";
 
                 $username = $_POST["_username"]; // get data
                 $email = $_POST["_email"]; // get data
 
-                checkUsername();
-                checkEmail();
-                checkPassword( $_POST['_password'] );
+                checkUsername( $con , $username );
+                checkEmail( $con , $email );
+                checkPassword( $con , $_POST['_password'] );
 
                 if ( checkValid() ) { // auto log in when signUp success
+                    insertAccountInfo( $con , $username , $email , $_POST['_password'] );
                     $_SESSION['loggedin'] = true;
                     $_SESSION['user'] = $username;
                     header("Location: index.php"); // redirection
                 }
-
                 include "disconnectToDB.php";
             }
-            function checkUsername() {
-                if ( $GLOBALS['username'] == "" ) $GLOBALS['usernameErr'] = "Username can not be blank!!<br>";
+            function insertAccountInfo( $con , $username , $email , $password ) {
+                $query = mysqli_query( $con , "select max( userid ) from account" ); // select newest user id
+                $row = $query->fetch_assoc(); // get data;
+                $id = $row["max( userid )"];
+                $id++;
+
+                $sql = "insert into account values( '" . $id . "' , '" . $username . "' , '" . $password . "' , '" . $email . "' )";
+                mysqli_query( $con , $sql );
+            }
+            function checkUsername( $con , $username ) {
+                if ( $username == "" ) $GLOBALS['usernameErr'] = "Username can not be blank!!<br>";
                 else {
-                    $sql = "select username from account where username = '" . $GLOBALS['username'] . "'";
+                    $sql = "select username from account where username = '" . $username . "'";
                     $query = mysqli_query( $con , $sql );
                     $result = $query->num_rows;
 
                     if ( $result > 0 ) $GLOBALS['usernameErr'] = "Username already taken!!<br>";
                 }
             }
-            function checkEmail() {
-                if ( $GLOBALS['email'] == "" ) $GLOBALS['emailErr'] = "Email can not be blank!!<br>";
-                else if ( !filter_var( $GLOBALS['email'] , FILTER_VALIDATE_EMAIL ) ) $GLOBALS['emailErr'] = "Invalid email format!!<br>";
+            function checkEmail( $con , $email ) {
+                if ( $email == "" ) $GLOBALS['emailErr'] = "Email can not be blank!!<br>";
+                else if ( !filter_var( $email , FILTER_VALIDATE_EMAIL ) ) $GLOBALS['emailErr'] = "Invalid email format!!<br>";
                 else {
-                    $sql = "select email from account where email = '" . $GLOBALS['email'] . "'";
+                    $sql = "select email from account where email = '" . $email . "'";
                     $query = mysqli_query( $con , $sql );
                     $result = $query->num_rows;
                     if ( $result > 0 ) $GLOBALS['emailErr'] = "Email already taken!!<br>";
                 }
             }
-            function checkPassword( $pasw ) {
+            function checkPassword( $con , $pasw ) {
                 if ( $pasw == "" ) {
                     $GLOBALS['passwordErr'] = "Password can not be blank!!<br>";
                     return;
                 }
-                if ( strlen( $pasw ) < 8 ) { // check at least 8 characters
+                if ( strlen( $pasw ) <= 7 ) { // check at least 8 characters
                     $GLOBALS['passwordErr'] = "Invalid password!!<br>";
                     return;
                 }
-                if ( !preg_match( '/[A-Za-z]/' , $myString ) && !preg_match( '/[0-9]/', $myString ) ) {
+                if ( ( !preg_match( '/[A-Z]/' , $pasw ) || !preg_match( '/[a-z]/' , $pasw ) ) && !preg_match( '/[0-9]/', $pasw ) ) {
                     $GLOBALS['passwordErr'] = "Invalid password!!<br>";
                     return;
                 }
@@ -125,7 +134,7 @@
                             <div class="passwordWarn">use at least one letter , one numeral and six characters</div>
                             <?php if ( $passwordErr != "" ) echo "<div class='signUPvalid'>" . $passwordErr . "</div>"; ?> <!--password need to be valid-->
 
-                            <button type="submit" class="btn btn-default" name="SUBMIT">Sign up for message-board</button>
+                            <button type="submit" class="btn btn-default" name="SUBMIT_signup">Sign up for message-board</button>
                         </form>
                     </div>
                 </div>
