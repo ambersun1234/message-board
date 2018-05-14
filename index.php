@@ -152,7 +152,7 @@
 
         <div id="board">
             <div class="container homepage">
-                <h2>看板</h2>
+                <h2>board</h2>
                 <hr>
                 <!-- Example row of columns -->
                 <div class="row">
