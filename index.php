@@ -114,9 +114,10 @@
         <div class="jumbotron" id="signUp">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-6">
-                        <h2>Our goal is to inspire <br>Tallahassee to write 1,000,000<br> lines of code_</h2>
-                        <p>All over the country people are taking the <strong>HOUR OF CODE</strong> challenge issued by <strong>CODE.org</strong>. Millions of lines of code are being written. In the capital of Florida, Tallahassee, the community is taking the challenge and our goal is to write 1,000,000 lines of code_</p>
+                    <div class="col-xs-6" style="text-align: left;">
+                        <h2>Build for everyone!!<br></h2>
+                        <h3>Our goal is to create a platform for everyone to talk with.<br> You can talk to people around the world by using <strong>message-board</strong>.<br> Sign up or Sign in to enjoy our service!!.</h3>
+                        <!--p strong-->
                         <br><br><br>
                     </div>
                     <div class="col-xs-6 signUp">
