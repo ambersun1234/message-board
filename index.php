@@ -164,7 +164,7 @@
                         <h3><span class="head_emphasis">gaming</span></h3>
                         <!--<span class="emphasis">-->
                         <p>Want to know the <span class="emphasis">hottest game</span> right now?<br>Can't solve level 99 challenge?<br>Click the button below and we'll help you get everything you want.</p>
-                        <p><a class="btn btn-default" href="#" role="button" style="color: #e74c3c">Start Gaming &raquo;</a></p>
+                        <p><a class="btn btn-default" href="Gaming.php" role="button" style="color: #e74c3c">Start Gaming &raquo;</a></p>
                     </div>
                     <div class="col-md-4">
                         <span class="fa-stack fa-4x">
