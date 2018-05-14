@@ -143,7 +143,6 @@
 
         <div id="who-we-are">
             <div class="container homepage">
-                <img src="images/academy_brand_med.png" alt="Massive Academy" title="Massive Academy">
                 <h2>Who We Are</h2>
                 <hr>
                 <p>We are <a href="https://google.com" target="_blank">MASSIVE Academy</a>. We aim to improve education through both method - effective project-based learning - and material - by teaching skills that are applicable to improving your life today.</p>
@@ -159,7 +158,7 @@
                     <div class="col-md-4">
                         <span class="fa-stack fa-4x">
                             <i class="fa fa-circle fa-stack-2x"></i>
-                            <i class="fa fa-user fa-stack-1x fa-inverse"></i>
+                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                         </span>
                         <h3><span class="head_emphasis">Students</span></h3>
                         <p>Want to learn how to code? Want to help us get to <span class="emphasis">1,000,000 lines</span>? Click the button below and we'll let you know how to get involved.</p>
@@ -177,7 +176,7 @@
                     <div class="col-md-4">
                         <span class="fa-stack fa-4x">
                             <i class="fa fa-circle fa-stack-2x"></i>
-                            <i class="fa fa-money fa-stack-1x fa-inverse"></i>
+                            <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                         </span>
                         <h3><span style="color: red;">Sponsors</span></h3>
                         <p>We love all the support we get to help host more events, and empower more lives with the knowledge of coding. Click to get involved.</p>
