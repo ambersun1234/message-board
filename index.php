@@ -161,26 +161,27 @@
                             <i class="fa fa-circle fa-stack-2x"></i>
                             <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                         </span>
-                        <h3><span class="head_emphasis">Students</span></h3>
-                        <p>Want to learn how to code? Want to help us get to <span class="emphasis">1,000,000 lines</span>? Click the button below and we'll let you know how to get involved.</p>
-                        <p><a class="btn btn-default" href="https://docs.google.com/forms/d/e/1FAIpQLSfonSuFwVa_mQ_KDQugr1FSiDwl55wluUXpyBMde8_fIbW8bQ/viewform" target="_blank" role="button" style="color: #e74c3c">Start Learning &raquo;</a></p>
+                        <h3><span class="head_emphasis">gaming</span></h3>
+                        <!--<span class="emphasis">-->
+                        <p>Want to know the <span class="emphasis">hottest game</span> right now?<br>Can't solve level 99 challenge?<br>Click the button below and we'll help you get everything you want.</p>
+                        <p><a class="btn btn-default" href="#" role="button" style="color: #e74c3c">Start Gaming &raquo;</a></p>
                     </div>
                     <div class="col-md-4">
                         <span class="fa-stack fa-4x">
                             <i class="fa fa-circle fa-stack-2x"></i>
                             <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                         </span>
-                        <h3><span class="head_emphasis">Educators</span></h3>
-                        <p>Want to bring this initiative to your school or institution? <span class="emphasis">Awesome!</span> Click the button below and we'll make it happen.</p>
-                        <p><a class="btn btn-default" href="#" target="_blank" role="button" style="color: #e74c3c">Join the Initiative &raquo;</a></p>
+                        <h3><span class="head_emphasis">news</span></h3>
+                        <p>We'll giving you the latest news.<br>You can get the newest information around the world by simply checking our <span class="emphasis">NEWS board</span>. </p>
+                        <p><a class="btn btn-default" href="#" target="_blank" role="button" style="color: #e74c3c">check latest news &raquo;</a></p>
                     </div>
                     <div class="col-md-4">
                         <span class="fa-stack fa-4x">
                             <i class="fa fa-circle fa-stack-2x"></i>
                             <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                         </span>
-                        <h3><span style="color: red;">Sponsors</span></h3>
-                        <p>We love all the support we get to help host more events, and empower more lives with the knowledge of coding. Click to get involved.</p>
+                        <h3><span style="color: red;">gossip</span></h3>
+                        <p>Want to know what people are disgusting about?<br>Don't want to miss the trend<br>Catch up with the <span class="emphasis">pop culture</span> just by clicking the button below!</p>
                         <p><a class="btn btn-default" href="#" target="_blank" role="button" style="color: #e74c3c">Give Support &raquo;</a></p>
                     </div>
                 </div>
