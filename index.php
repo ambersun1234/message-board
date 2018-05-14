@@ -146,7 +146,7 @@
             <div class="container homepage">
                 <h2>Who We Are</h2>
                 <hr>
-                <p>We are <a href="https://google.com" target="_blank">MASSIVE Academy</a>. We aim to improve education through both method - effective project-based learning - and material - by teaching skills that are applicable to improving your life today.</p>
+                <p>We are <span style="color: #e74c3c">message-board</span>. We aim to improve the speed of information exchange, and the quality of information.</p>
             </div>
         </div>
 

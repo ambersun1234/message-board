@@ -173,9 +173,6 @@ footer {
   width: 160px;
   margin-top: 20px;
 }
-.homepage a{
-  color: #e74c3c;
-}
 .homepage a:hover{
   color: #e74c3c;
   text-decoration: none;
