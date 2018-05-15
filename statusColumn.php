@@ -26,12 +26,12 @@
                      *  if user logged in --> $_SESSION['loggedin'] = true & $_SESSION['user'] = $username
                      */
                     if ( isset( $_SESSION['loggedin'] ) && $_SESSION['loggedin'] == true ) {
-                        echo '<li><a href="#">' . $_SESSION['user'] . '</a></li>';
+                        echo '<li><a href="/accountCenter.php">' . $_SESSION['user'] . '</a></li>';
                         echo '<li><a href="signOut.php">log out</a></li>';
                     }
                     else {
-                        echo '<li><a href="signIn.php">Sign up</a></li>';
-                        echo '<li><a href="/index.php#signUp">Sign in</a></li>';
+                        echo '<li><a href="signIn.php">Sign in</a></li>';
+                        echo '<li><a href="/index.php#signUp">Sign up</a></li>';
                     }
                 ?>
             </ul>
