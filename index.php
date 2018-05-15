@@ -173,7 +173,7 @@
                         </span>
                         <h3><span class="head_emphasis">news</span></h3>
                         <p>We'll giving you the latest news.<br>You can get the newest information around the world by simply checking our <span class="emphasis">NEWS board</span>. </p>
-                        <p><a class="btn btn-default" href="#" target="_blank" role="button" style="color: #e74c3c">check latest news &raquo;</a></p>
+                        <p><a class="btn btn-default" href="#" target="_blank" role="button" style="color: #e74c3c">Check latest news &raquo;</a></p>
                     </div>
                     <div class="col-md-4">
                         <span class="fa-stack fa-4x">
@@ -182,7 +182,7 @@
                         </span>
                         <h3><span style="color: red;">gossip</span></h3>
                         <p>Want to know what people are disgusting about?<br>Don't want to miss the trend<br>Catch up with the <span class="emphasis">pop culture</span> just by clicking the button below!</p>
-                        <p><a class="btn btn-default" href="#" target="_blank" role="button" style="color: #e74c3c">Give Support &raquo;</a></p>
+                        <p><a class="btn btn-default" href="#" target="_blank" role="button" style="color: #e74c3c">Start chatting &raquo;</a></p>
                     </div>
                 </div>
             </div>
