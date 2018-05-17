@@ -19,6 +19,13 @@ footer {
 #onemillion{
   background-color: #ff5511;
 }
+.accountCenter form {
+    border-color: red;
+    border-style: solid;
+    border-width: medium;
+    margin: auto;
+    padding: 40px;
+}
 .signUPvalid {
     color: #ff0202;
 }

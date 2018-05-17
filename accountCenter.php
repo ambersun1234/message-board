@@ -23,8 +23,15 @@
             }
          ?>
 
-         <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"]);?>">
-
-         </form>
+         <div class="accountCenter">
+             <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"]);?>">
+                 <div class="container row">
+                     <div class="col-xs-6">
+                     </div>
+                     <div class="col-xs-6">
+                     </div>
+                 </div>
+             </form>
+         </div>
     </body>
 </html>
