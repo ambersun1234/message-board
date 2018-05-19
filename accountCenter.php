@@ -53,6 +53,7 @@
             if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["submit"] ) ) { // active when submit
                 writeData();
                 checkUsername( $username , $dbUsername , $con );
+                checkEmail( $email , $dbEmail , $con );
             }
             function checkUsername( $username , $dbUsername , $con ) {
                 if ( $username == $dbUsername || $username == "" ) {
@@ -68,6 +69,21 @@
                     unset( $_SESSION['user'] ); // delete previous session
                     $_SESSION['user'] = $username; // add new session
                     if ( $query ) $GLOBALS["usernameSuc"] = "Update successfully!!<br>";
+                }
+            }
+            function checkEmail( $email , $dbEmail , $con ) {
+                if ( $email == $dbEmail || $email == "" ) {
+                    $GLOBALS["email"] = $dbEmail;
+                    return;
+                }
+                $sql = "select email from account where email = '" . $email . "'";
+                $query = mysqli_query( $con , $sql );
+                if ( $query->num_rows != 0 ) $GLOBALS["emailErr"] = "Duplicate email!!<br>";
+                else if ( !filter_var( $email , FILTER_VALIDATE_EMAIL ) ) $GLOBALS["emailErr"] = "Invalid email format!!<br>";
+                else { // update database
+                    $sql = "update account set email = '" . $email . "' where userid = '" . $GLOBALS["userid"] . "'";
+                    $query = mysqli_query( $con , $sql );
+                    if ( $query ) $GLOBALS["emailSuc"] = "Update successfully!!<br>";
                 }
             }
             function writeData() { // write into php variables
@@ -100,7 +116,10 @@
 
                          Email:<br>
                          <input type="text" name="_email" placeholder="you@gmail.com" value="<?php echo $email; ?>"><br>
-                         <?php echo "<div class='signUPvalid'>" . $emailErr . "</div>"; ?>
+                         <?php
+                            if ( $emailErr != "" ) echo "<div class='changeInvalid'>" . $emailErr . "</div>";
+                            else if ( $emailSuc != "" ) echo "<div class='changeValid'>" . $emailSuc . "</div>";
+                          ?>
 
                          <?php echo "Total post number = " . $postNumber . "<br>" ?>
                          <?php echo "Total command number = " . $commandNumber . "<br>" ?>
