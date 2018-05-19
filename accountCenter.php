@@ -54,6 +54,7 @@
                 writeData();
                 checkUsername( $username , $dbUsername , $con );
                 checkEmail( $email , $dbEmail , $con );
+                checkPassword( $oldPassword , $newPassword , $cnewPassword , $dbPassword , $con );
             }
             function checkUsername( $username , $dbUsername , $con ) {
                 if ( $username == $dbUsername || $username == "" ) {
@@ -84,6 +85,31 @@
                     $sql = "update account set email = '" . $email . "' where userid = '" . $GLOBALS["userid"] . "'";
                     $query = mysqli_query( $con , $sql );
                     if ( $query ) $GLOBALS["emailSuc"] = "Update successfully!!<br>";
+                }
+            }
+            function checkPassword( $oldPassword , $newPassword , $cnewPassword , $dbPassword , $con ) {
+                if ( $newPassword != "" ) {
+                    // check old password correct or not
+                    if ( $oldPassword != $dbPassword ) {
+                        $GLOBALS["oldPasswordErr"] = "Incorrect password!!<br>";
+                    }
+                    // check new password valid or not
+                    if ( strlen( $newPassword ) <= 7 ) { // check at least 8 characters
+                        $GLOBALS["newPasswordErr"] = "Must at least 8 characters!!<br>";
+                    }
+                    if ( ( !preg_match( '/[A-Z]/' , $newPassword ) || !preg_match( '/[a-z]/' , $newPassword ) ) && !preg_match( '/[0-9]/', $newPassword ) ) {
+                        $GLOBALS["newPasswordErr"] = "Invalid password!!<br>";
+                    }
+                    // confirm new password
+                    if ( $newPassword != $cnewPassword ) {
+                        $GLOBALS["cnewPasswordErr"] = "Incorrect confirm password!!<br>";
+                    }
+                    // update to database if no error
+                    if ( $GLOBALS["oldPasswordErr"] == "" && $GLOBALS["newPasswordErr"] == "" && $GLOBALS["cnewPasswordErr"] == "" ) {
+                        $sql = "update account set password = '" . $newPassword . "' where userid = '" . $GLOBALS["userid"] . "'";
+                        $query = mysqli_query( $con , $sql );
+                        if ( $query ) $GLOBALS["passwordSuc"] = "Update successfully!!<br>";
+                    }
                 }
             }
             function writeData() { // write into php variables
@@ -128,15 +154,17 @@
                          <hr>
                          Old password:
                          <input type="password" placeholder="your old password" name="_oldPassword"><br>
-                         <?php echo "<div class='signUPvalid'>" . $oldPasswordErr . "</div>"; ?>
+                         <?php echo "<div class='changeInvalid'>" . $oldPasswordErr . "</div>"; ?>
 
                          New password:
                          <input type="password" placeholder="your new password" name="_newPassword"><br>
-                         <?php echo "<div class='signUPvalid'>" . $newPasswordErr . "</div>"; ?>
+                         <div class="passwordWarn">use at least one letter , one numeral and six characters</div>
+                         <?php echo "<div class='changeInvalid'>" . $newPasswordErr . "</div>"; ?>
 
                          Confirm new password:
                          <input type="password" placeholder="confirm your new password" name="_cnewPassword"><br>
-                         <?php echo "<div class='signUPvalid'>" . $cnewPasswordErr . "</div>"; ?>
+                         <?php echo "<div class='changeInvalid'>" . $cnewPasswordErr . "</div>"; ?>
+                         <?php echo "<div class='changeValid'>" . $passwordSuc . "</div>"; ?>
 
 
                          <button class="btn bth-default update_button" type="submit" name="submit">Update</button>
