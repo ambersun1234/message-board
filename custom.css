@@ -30,8 +30,15 @@ footer {
 .accountCenter .container img {
     width: 100%;
 }
-.accountCenter .photo_button {
+.accountCenter hr {
+    border-color: #bababa;
+    border-width: 2px;
+}
+.accountCenter input {
+    margin-top: 10px;
+    margin-bottom: 10px;
     width: 100%;
+    padding: 5px 5px;
 }
 .accountCenter h2 {
     text-align: center;
