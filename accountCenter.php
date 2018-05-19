@@ -23,6 +23,7 @@
             $username = $email = $oldPassword = $newPassword = $cnewPassword = "";
             $usernameErr = $emailErr = $oldPasswordErr = $newPasswordErr = $cnewPasswordErr = "";
             $usernameSuc = $emailSuc = $passwordSuc = "";
+            $usernameFail = $emailFail = $passwordFail = "";
             $postNumber = $commandNumber = 0;
 
             // get data
@@ -70,6 +71,7 @@
                     unset( $_SESSION['user'] ); // delete previous session
                     $_SESSION['user'] = $username; // add new session
                     if ( $query ) $GLOBALS["usernameSuc"] = "Update successfully!!<br>";
+                    else $GLOBALS["usernameFail"] = "Update failed , please try again.<br>";
                 }
             }
             function checkEmail( $email , $dbEmail , $con ) {
@@ -85,6 +87,7 @@
                     $sql = "update account set email = '" . $email . "' where userid = '" . $GLOBALS["userid"] . "'";
                     $query = mysqli_query( $con , $sql );
                     if ( $query ) $GLOBALS["emailSuc"] = "Update successfully!!<br>";
+                    else $GLOBALS["emailFail"] = "Update failed , please try again.<br>";
                 }
             }
             function checkPassword( $oldPassword , $newPassword , $cnewPassword , $dbPassword , $con ) {
@@ -109,6 +112,7 @@
                         $sql = "update account set password = '" . $newPassword . "' where userid = '" . $GLOBALS["userid"] . "'";
                         $query = mysqli_query( $con , $sql );
                         if ( $query ) $GLOBALS["passwordSuc"] = "Update successfully!!<br>";
+                        else $GLOBALS["passwordFail"] = "Update failed , please try again.<br>";
                     }
                 }
             }
