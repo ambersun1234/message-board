@@ -30,6 +30,12 @@ footer {
 .accountCenter .container img {
     width: 100%;
 }
+.changeValid {
+    color: green;
+}
+.changeInvalid {
+    color: red;
+}
 .accountCenter hr {
     border-color: #bababa;
     border-width: 2px;

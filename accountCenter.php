@@ -18,7 +18,12 @@
         <?php
             include "connectToDB.php";
 
-            $username = $email = $usernameErr = $emailErr = $oldPasswordErr = $newPasswordErr = $cnewPasswordErr = "";
+            $userid = 0;
+            $dbUsername = $dbEmail = $dbPassword = "";
+            $username = $email = $oldPassword = $newPassword = $cnewPassword = "";
+            $usernameErr = $emailErr = $oldPasswordErr = $newPasswordErr = $cnewPasswordErr = "";
+            $usernameSuc = $emailSuc = $passwordSuc = "";
+            $postNumber = $commandNumber = 0;
 
             // get data
             $sql = "select * from account where username = '" . $_SESSION['user'] . "'";
@@ -26,14 +31,51 @@
             $row = $query->fetch_assoc();
 
             $imageFilePath = $row["image"];
+            $userid = $row["userid"];
+            $dbUsername = $row["username"];
+            $dbEmail = $row["email"];
+            $dbPassword = $row["password"];
             if ( $imageFilePath == "" ) $imageFilePath = "default.jpeg"; // if personal image not specify , set to default
-
+            //---------------------------------------------------------------------------------
             $username = $row["username"];
             $email = $row["email"];
+            //---------------------------------------------------------------------------------
+            $sql = "select count(*) as total from post where userid = '" . $userid . "'";
+            $query = mysqli_query( $con , $sql );
+            $row = $query->fetch_assoc();
+            $postNumber = $row["total"];
+            //---------------------------------------------------------------------------------
+            $sql = "select count(*) as total from command where userid = '" . $userid . "'";
+            $query = mysqli_query( $con , $sql );
+            $row = $query->fetch_assoc();
+            $commandNumber = $row["total"];
             // end get data
-
-            if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["SUBMIT_signup"] ) ) { // active when submit
-
+            if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["submit"] ) ) { // active when submit
+                writeData();
+                checkUsername( $username , $dbUsername , $con );
+            }
+            function checkUsername( $username , $dbUsername , $con ) {
+                if ( $username == $dbUsername || $username == "" ) {
+                    $GLOBALS["username"] = $dbUsername;
+                    return;
+                }
+                $sql = "select username from account where username = '" . $username . "'";
+                $query = mysqli_query( $con , $sql );
+                if ( $query->num_rows != 0 ) $GLOBALS["usernameErr"] = "Duplicate username!!<br>";
+                else { // update database
+                    $sql = "update account set username = '" . $username . "' where userid = '" . $GLOBALS["userid"] . "'";
+                    $query = mysqli_query( $con , $sql );
+                    unset( $_SESSION['user'] ); // delete previous session
+                    $_SESSION['user'] = $username; // add new session
+                    if ( $query ) $GLOBALS["usernameSuc"] = "Update successfully!!<br>";
+                }
+            }
+            function writeData() { // write into php variables
+                $GLOBALS["username"] = $_POST["_username"];
+                $GLOBALS["email"] = $_POST["_email"];
+                $GLOBALS["oldPassword"] = $_POST["_oldPassword"];
+                $GLOBALS["newPassword"] = $_POST["_newPassword"];
+                $GLOBALS["cnewPassword"] = $_POST["_cnewPassword"];
             }
             include "disconnectToDB.php";
          ?>
@@ -51,11 +93,17 @@
                          <hr>
                          Username:<br>
                          <input type="text" name="_username" placeholder="Pick a username" value="<?php echo $username; ?>"><br>
-                         <?php echo "<div class='signUPvalid'>" . $usernameErr . "</div>"; ?>
+                         <?php
+                            if ( $usernameErr != "" ) echo "<div class='changeInvalid'>" . $usernameErr . "</div>";
+                            else if ( $usernameSuc != "" ) echo "<div class='changeValid'>" . $usernameSuc . "</div>";
+                          ?>
 
                          Email:<br>
                          <input type="text" name="_email" placeholder="you@gmail.com" value="<?php echo $email; ?>"><br>
                          <?php echo "<div class='signUPvalid'>" . $emailErr . "</div>"; ?>
+
+                         <?php echo "Total post number = " . $postNumber . "<br>" ?>
+                         <?php echo "Total command number = " . $commandNumber . "<br>" ?>
 
                          <h3>Change Password</h3>
                          <hr>
@@ -72,7 +120,7 @@
                          <?php echo "<div class='signUPvalid'>" . $cnewPasswordErr . "</div>"; ?>
 
 
-                         <button class="btn bth-default update_button" type="submit" name="fileToUpload">Update</button>
+                         <button class="btn bth-default update_button" type="submit" name="submit">Update</button>
                      </div>
                 </form>
             </div>
