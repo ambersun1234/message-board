@@ -20,11 +20,22 @@ footer {
   background-color: #ff5511;
 }
 .accountCenter form {
-    border-color: red;
-    border-style: solid;
-    border-width: medium;
+    width: 85%;
     margin: auto;
-    padding: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 60px;
+    padding-right: 60px;
+}
+.accountCenter .container img {
+    width: 100%;
+}
+.accountCenter .photo_button {
+    width: 100%;
+}
+.accountCenter h2 {
+    text-align: center;
+    margin: 0px;
 }
 .signUPvalid {
     color: #ff0202;
