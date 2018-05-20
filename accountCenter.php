@@ -20,43 +20,52 @@
 
             $userid = 0;
             $dbUsername = $dbEmail = $dbPassword = "";
-            $username = $email = $oldPassword = $newPassword = $cnewPassword = "";
-            $usernameErr = $emailErr = $oldPasswordErr = $newPasswordErr = $cnewPasswordErr = "";
-            $usernameSuc = $emailSuc = $passwordSuc = "";
+            $username = $email = $oldPassword = $newPassword = $cnewPassword = $imageFilePath = "";
+            $usernameErr = $emailErr = $oldPasswordErr = $newPasswordErr = $cnewPasswordErr = $fileErr = "";
+            $usernameSuc = $emailSuc = $passwordSuc = $fileSuc = "";
             $usernameFail = $emailFail = $passwordFail = "";
             $postNumber = $commandNumber = 0;
 
-            // get data
-            $sql = "select * from account where username = '" . $_SESSION['user'] . "'";
-            $query = mysqli_query( $con , $sql );
-            $row = $query->fetch_assoc();
+            getData( $con );
 
-            $imageFilePath = $row["image"];
-            $userid = $row["userid"];
-            $dbUsername = $row["username"];
-            $dbEmail = $row["email"];
-            $dbPassword = $row["password"];
-            if ( $imageFilePath == "" ) $imageFilePath = "default.jpeg"; // if personal image not specify , set to default
-            //---------------------------------------------------------------------------------
-            $username = $row["username"];
-            $email = $row["email"];
-            //---------------------------------------------------------------------------------
-            $sql = "select count(*) as total from post where userid = '" . $userid . "'";
-            $query = mysqli_query( $con , $sql );
-            $row = $query->fetch_assoc();
-            $postNumber = $row["total"];
-            //---------------------------------------------------------------------------------
-            $sql = "select count(*) as total from command where userid = '" . $userid . "'";
-            $query = mysqli_query( $con , $sql );
-            $row = $query->fetch_assoc();
-            $commandNumber = $row["total"];
-            // end get data
             if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["submit"] ) ) { // active when submit
                 writeData();
                 checkUsername( $username , $dbUsername , $con );
                 checkEmail( $email , $dbEmail , $con );
                 checkPassword( $oldPassword , $newPassword , $cnewPassword , $dbPassword , $con );
+                if ( file_exists( $_FILES["fileToUpload"]["tmp_name"] ) || is_uploaded_file( $_FILES["fileToUpload"]["tmp_name"] ) ) {
+                    // enter this block when file is uploaded
+                    uploadImage( $con );
+                }
+                getData( $con );
             }
+
+            function getData( $con ) {
+                $sql = "select * from account where username = '" . $_SESSION['user'] . "'";
+                $query = mysqli_query( $con , $sql );
+                $row = $query->fetch_assoc();
+
+                $GLOBALS["imageFilePath"] = $row["image"];
+                $GLOBALS["userid"] = $row["userid"];
+                $GLOBALS["dbUsername"] = $row["username"];
+                $GLOBALS["dbEmail"] = $row["email"];
+                $GLOBALS["dbPassword"] = $row["password"];
+                if ( $GLOBALS["imageFilePath"] == "" ) $GLOBALS["imageFilePath"] = "default.jpeg"; // if personal image not specify , set to default
+                //---------------------------------------------------------------------------------
+                $GLOBALS["username"] = $row["username"];
+                $GLOBALS["email"] = $row["email"];
+                //---------------------------------------------------------------------------------
+                $sql = "select count(*) as total from post where userid = '" . $GLOBALS["userid"] . "'";
+                $query = mysqli_query( $con , $sql );
+                $row = $query->fetch_assoc();
+                $GLOBALS["postNumber"] = $row["total"];
+                //---------------------------------------------------------------------------------
+                $sql = "select count(*) as total from command where userid = '" . $GLOBALS["userid"] . "'";
+                $query = mysqli_query( $con , $sql );
+                $row = $query->fetch_assoc();
+                $GLOBALS["commandNumber"] = $row["total"];
+            }
+
             function checkUsername( $username , $dbUsername , $con ) {
                 if ( $username == $dbUsername || $username == "" ) {
                     $GLOBALS["username"] = $dbUsername;
@@ -116,6 +125,32 @@
                     }
                 }
             }
+            function uploadImage( $con ) {
+                if ( isset( $_FILES["fileToUpload"] ) ) { // go into block only if choose file to upload
+                    $targetDir = "images/";
+                    $fileType = basename( $_FILES["fileToUpload"]["type"] );
+                    $targetFile = $targetDir . $GLOBALS["userid"] . "_image." . $fileType; // rename file
+                    $imagePath = $GLOBALS["userid"] . "_image." . $fileType;
+                    if ( !checkFileType( $fileType ) == true ) { // check file type
+                        $GLOBALS["fileErr"] = "Only JPG , JPEG and Png are allowed!!<br>";
+                        return;
+                    }
+                    if ( move_uploaded_file( $_FILES["fileToUpload"]["tmp_name"] , $targetFile ) ) { // move image to images/ directory
+                        $sql = "update account set image = '" . $imagePath . "' where userid = '" . $GLOBALS["userid"] . "'";
+                        $query = mysqli_query( $con , $sql );
+                        if ( $query ) $GLOBALS["fileSuc"] = "Update successfully!!<br>";
+                        else $GLOBALS["fileErr"] = "Update failed , please try again.<br>";
+                    }
+                    else {
+                        $GLOBALS["fileErr"] = "Update failed , please try again.<br>";
+                    }
+                    return;
+                }
+            }
+            function checkFileType( $type ) {
+                if ( $type == "jpg" || $type == "jpeg" || $type == "png" ) return true;
+                else return false;
+            }
             function writeData() { // write into php variables
                 $GLOBALS["username"] = $_POST["_username"];
                 $GLOBALS["email"] = $_POST["_email"];
@@ -128,12 +163,17 @@
 
          <div class="accountCenter">
              <div class="container">
-                <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"]);?>">
+                <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
                      <div class="col-xs-3" style="padding: 5px 5px;">
                          <h3 style="text-align: center;">Profile Picture</h3>
                          <?php echo "<img src='/images/" . $imageFilePath . "'>"?>
-                         <input accept="image/jpeg" type="file" name="fileToUpload"><br>
+                         <input accept="image/jpeg,image/png,image/jpg" type="file" name="fileToUpload">
+                         <?php
+                            if ( $fileErr != "" ) echo "<div class='changeInvalid' style='text-align: center;'>" . $fileErr . "</div>";
+                            else if ( $fileSuc != "" ) echo "<div class='changeValid' style='text-align: center;'>" . $fileSuc . "</div>";
+                          ?>
                      </div>
+
                      <div class="col-xs-6" style="padding: 5px 5px;">
                          <h3>Profile</h3>
                          <hr>

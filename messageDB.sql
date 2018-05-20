@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主機: localhost
--- 產生時間： 2018 年 05 月 19 日 15:59
+-- 產生時間： 2018 年 05 月 20 日 17:43
 -- 伺服器版本: 5.7.22-0ubuntu0.16.04.1
 -- PHP 版本： 7.0.30-0ubuntu0.16.04.1
 
@@ -39,10 +39,10 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`userid`, `username`, `password`, `email`, `image`) VALUES
-(0, 'root', 'hello1234', 'root@gmail.com', ''),
+(0, 'root', 'root1234', 'iamroot@gmail.com', '0_image.jpeg'),
 (1, 'mary', 'mary1234', 'prettymary@gmail.com', ''),
 (2, 'john', 'john0204', 'johnny@gmail.com', ''),
-(3, 'patric', 'patric9487', 'handsome@gmail.com', ''),
+(3, 'patric', 'patric9487', 'handsome@gmail.com', '3_image.jpeg'),
 (4, 'vanessa', 'vanessa0601', 'vanessavanessa@gmail.com', '');
 
 -- --------------------------------------------------------
