@@ -15,6 +15,10 @@
     <body style="background-color: #f9f9f9">
         <?php include "statusColumn.php"; ?>
 
+        <?php // prevent user from direct access from url , redirect to signIn.php
+            if ( $_SESSION['loggedin'] == false ) header("Location: signIn.php");
+         ?>
+
         <?php
             include "connectToDB.php";
 
