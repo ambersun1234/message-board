@@ -55,10 +55,11 @@
                 checkPassword( $con , $_POST['_password'] );
 
                 if ( checkValid() ) { // auto log in when signUp success
-                    insertAccountInfo( $con , $username , $email , $_POST['_password'] );
-                    $_SESSION['loggedin'] = true;
-                    $_SESSION['user'] = $username;
-                    header("Location: index.php"); // redirection
+                    if ( insertAccountInfo( $con , $username , $email , $_POST['_password'] ) ) {
+                        $_SESSION['loggedin'] = true;
+                        $_SESSION['user'] = $username;
+                        header("Location: index.php"); // redirection
+                    }
                 }
                 include "disconnectToDB.php";
             }
@@ -68,8 +69,10 @@
                 $id = $row["max( userid )"];
                 $id++;
 
-                $sql = "insert into account values( '" . $id . "' , '" . $username . "' , '" . $password . "' , '" . $email . "' )";
-                mysqli_query( $con , $sql );
+                $sql = "insert into account values( '" . $id . "' , '" . $username . "' , '" . $password . "' , '" . $email . "' , '' )";
+                $query = mysqli_query( $con , $sql );
+                if ( $query ) return true;
+                else return false;
             }
             function checkUsername( $con , $username ) {
                 if ( $username == "" ) $GLOBALS['usernameErr'] = "Username can not be blank!!<br>";
