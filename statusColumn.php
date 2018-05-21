@@ -15,7 +15,6 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php
-                    // include css file . note: css can not write in php echo!!
                     echo '<link rel="stylesheet" type="text/css" href="custom.css">';
 
                     /*
