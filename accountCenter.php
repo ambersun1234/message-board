@@ -175,7 +175,7 @@
                          <input accept="image/jpeg,image/png,image/jpg" type="file" name="fileToUpload">
                          <?php
                             if ( $fileErr != "" ) echo "<div class='changeInvalid' style='text-align: center;'>" . $fileErr . "</div>";
-                            else if ( $fileSuc != "" ) echo "<div class='changeValid' style='text-align: center;'>" . $fileSuc . "</div>";
+                            else if ( $fileSuc != "" ) echo "<div class='valid' style='text-align: center;'>" . $fileSuc . "</div>";
                           ?>
                      </div>
 
@@ -186,14 +186,14 @@
                          <input type="text" name="_username" placeholder="Pick a username" value="<?php echo $username; ?>"><br>
                          <?php
                             if ( $usernameErr != "" ) echo "<div class='changeInvalid'>" . $usernameErr . "</div>";
-                            else if ( $usernameSuc != "" ) echo "<div class='changeValid'>" . $usernameSuc . "</div>";
+                            else if ( $usernameSuc != "" ) echo "<div class='valid'>" . $usernameSuc . "</div>";
                           ?>
 
                          Email:<br>
                          <input type="text" name="_email" placeholder="you@gmail.com" value="<?php echo $email; ?>"><br>
                          <?php
                             if ( $emailErr != "" ) echo "<div class='changeInvalid'>" . $emailErr . "</div>";
-                            else if ( $emailSuc != "" ) echo "<div class='changeValid'>" . $emailSuc . "</div>";
+                            else if ( $emailSuc != "" ) echo "<div class='valid'>" . $emailSuc . "</div>";
                           ?>
 
                          <?php echo "Total post number = " . $postNumber . "<br>" ?>
@@ -213,7 +213,7 @@
                          Confirm new password:
                          <input type="password" placeholder="confirm your new password" name="_cnewPassword"><br>
                          <?php echo "<div class='changeInvalid'>" . $cnewPasswordErr . "</div>"; ?>
-                         <?php echo "<div class='changeValid'>" . $passwordSuc . "</div>"; ?>
+                         <?php echo "<div class='valid'>" . $passwordSuc . "</div>"; ?>
 
 
                          <button class="btn bth-default update_button" type="submit" name="submit">Update</button>

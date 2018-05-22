@@ -139,20 +139,20 @@
                         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                             <span >Username</span><br>
                             <input type="text" name="_username" placeholder="Pick a username" value="<?php echo $username; ?>"><br>
-                            <?php if ( $usernameErr != "" ) echo "<div class='signUpInvalid'>" . $usernameErr . "</div>"; ?> <!--username need to be unique-->
+                            <?php if ( $usernameErr != "" ) echo "<div class='invalid'>" . $usernameErr . "</div>"; ?> <!--username need to be unique-->
 
                             <span>Email</span><br>
                             <input type="text" name="_email" placeholder="you@example.com" value="<?php echo $email; ?>"><br>
-                            <?php if ( $emailErr != "" ) echo "<div class='signUpInvalid'>" . $emailErr . "</div>"; ?> <!--email need to be unique-->
+                            <?php if ( $emailErr != "" ) echo "<div class='invalid'>" . $emailErr . "</div>"; ?> <!--email need to be unique-->
 
                             <span>Password</span><br>
                             <input type="password" name="_password" placeholder="Create a password"><br>
                             <div class="passwordWarn">use at least one letter , one numeral and six characters</div>
-                            <?php if ( $passwordErr != "" ) echo "<div class='signUpInvalid'>" . $passwordErr . "</div>"; ?> <!--password need to be valid-->
+                            <?php if ( $passwordErr != "" ) echo "<div class='invalid'>" . $passwordErr . "</div>"; ?> <!--password need to be valid-->
 
                             <?php
-                                if ( $createAccountErr != "" ) echo "<div class='signUpInvalid'>" . $createAccountErr . "</div>";
-                                else if ( $createAccountSuc != "" ) echo "<div class='signUpValid'>" . $createAccountSuc . "</div>";
+                                if ( $createAccountErr != "" ) echo "<div class='invalid'>" . $createAccountErr . "</div>";
+                                else if ( $createAccountSuc != "" ) echo "<div class='valid'>" . $createAccountSuc . "</div>";
                              ?>
 
                             <button type="submit" class="btn btn-default" name="SUBMIT_signup">Sign up for message-board</button>
