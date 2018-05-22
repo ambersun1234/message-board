@@ -22,18 +22,28 @@
                 $username = $_POST["_username"]; // get data
                 $password = $_POST["_password"]; // get data
 
-                $sql = "select * from account where username = '" . $username . "' and password = '" . $password . "'";
+                // echo "hash password = " . password_hash( $password , PASSWORD_DEFAULT ) . "<br>";
+
+                // if ( password_verify( $password , password_hash( $password , PASSWORD_DEFAULT ) ) ) echo "true<br>";
+                // else echo "false<br>";
+
+                $sql = "select * from account where username = '" . $username . "'";
                 $query = mysqli_query( $con , $sql ); // check if user exists
+                $row = $query->fetch_assoc();
                 $result = $query->num_rows;
 
-                if ( $result == 1 ) { // mark that the user logged in
+                if ( $result == 1 && checkPassword( $password , $row["password"] ) ) { // mark that the user logged in
                     $_SESSION['loggedin'] = true;
                     $_SESSION['user'] = $username;
-                    header("Location: index.php"); // redirt to index.php
+                    header("Location: index.php"); // redirect to index.php
                 }
                 else $loginError = "Incorrect username or password.";
 
                 include "disconnectToDB.php";
+            }
+            function checkPassword( $password , $password_hash ) { // use php function to check if password is correct or not
+                if ( password_verify( $password , $password_hash ) ) return true;
+                else return false;
             }
          ?>
 
