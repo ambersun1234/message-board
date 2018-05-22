@@ -106,7 +106,7 @@
             function checkPassword( $oldPassword , $newPassword , $cnewPassword , $dbPassword , $con ) {
                 if ( $newPassword != "" ) {
                     // check old password correct or not
-                    if ( $oldPassword != $dbPassword ) {
+                    if ( !password_verify( $oldPassword , $dbPassword ) ) { // use php function to check password correct or not
                         $GLOBALS["oldPasswordErr"] = "Incorrect password!!<br>";
                     }
                     // check new password valid or not
@@ -122,6 +122,7 @@
                     }
                     // update to database if no error
                     if ( $GLOBALS["oldPasswordErr"] == "" && $GLOBALS["newPasswordErr"] == "" && $GLOBALS["cnewPasswordErr"] == "" ) {
+                        $newPassword = password_hash( $newPassword , PASSWORD_DEFAULT ); // encrypt
                         $sql = "update account set password = '" . $newPassword . "' where userid = '" . $GLOBALS["userid"] . "'";
                         $query = mysqli_query( $con , $sql );
                         if ( $query ) $GLOBALS["passwordSuc"] = "Update successfully!!<br>";
