@@ -30,10 +30,10 @@ footer {
 .accountCenter .container img {
     width: 100%;
 }
-.changeValid {
+.valid {
     color: green;
 }
-.changeInvalid {
+.invalid {
     color: red;
 }
 .accountCenter hr {
@@ -50,8 +50,11 @@ footer {
     text-align: center;
     margin: 0px;
 }
-.signUPvalid {
-    color: #ff0202;
+.signUpInvalid {
+    color: red;
+}
+.signUpValid {
+    color: green;
 }
 .passwordWarn {
     font-size: 13px;
@@ -141,13 +144,6 @@ footer {
 }
 .login_new_to_message{
     text-align: center;
-    color: #ffffff;
-}
-.login_error{
-    margin: auto;
-    width: 21.5%;
-    text-align: center;
-    background: #ff6060;
     color: #ffffff;
 }
 .login_error_message{
