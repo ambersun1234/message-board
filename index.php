@@ -42,20 +42,21 @@
 
         <?php // check signUp valid or not and insert into database
             $usernameErr = $passwordErr = $emailErr = ""; // initialize
-            $username = $email = ""; // initialize
+            $username = $email = $password = ""; // initialize
 
             if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["SUBMIT_signup"] ) ) { // active when submit
                 include "connectToDB.php";
 
                 $username = $_POST["_username"]; // get data
                 $email = $_POST["_email"]; // get data
+                $password = $_POST['_password']; // get data
 
                 checkUsername( $con , $username );
                 checkEmail( $con , $email );
-                checkPassword( $con , $_POST['_password'] );
+                checkPassword( $con , $password );
 
                 if ( checkValid() ) { // auto log in when signUp success
-                    if ( insertAccountInfo( $con , $username , $email , $_POST['_password'] ) ) {
+                    if ( insertAccountInfo( $con , $username , $email , $password ) ) {
                         $_SESSION['loggedin'] = true;
                         $_SESSION['user'] = $username;
                         header("Location: index.php"); // redirection
@@ -67,6 +68,7 @@
                 $query = mysqli_query( $con , "select max( userid ) from account" ); // select newest user id
                 $row = $query->fetch_assoc(); // get data;
                 $id = $row["max( userid )"];
+                $password = password_hash( $password , PASSWORD_DEFAULT ); // encrypt
                 $id++;
 
                 $sql = "insert into account values( '" . $id . "' , '" . $username . "' , '" . $password . "' , '" . $email . "' , '' )";
