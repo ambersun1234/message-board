@@ -41,8 +41,9 @@
         <?php include "statusColumn.php";?>
 
         <?php // check signUp valid or not and insert into database
-            $usernameErr = $passwordErr = $emailErr = ""; // initialize
+            $usernameErr = $passwordErr = $emailErr = $createAccountErr = ""; // initialize
             $username = $email = $password = ""; // initialize
+            $createAccountSuc = ""; // initialize
 
             if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["SUBMIT_signup"] ) ) { // active when submit
                 include "connectToDB.php";
@@ -55,11 +56,15 @@
                 checkEmail( $con , $email );
                 checkPassword( $con , $password );
 
-                if ( checkValid() ) { // auto log in when signUp success
+                if ( checkValid() ) {
                     if ( insertAccountInfo( $con , $username , $email , $password ) ) {
-                        $_SESSION['loggedin'] = true;
-                        $_SESSION['user'] = $username;
-                        header("Location: index.php"); // redirection
+                        if ( isset( $_SESSION['user'] ) && $_SESSION['loggedin'] == true ); // already logged in
+                        else { // not loggin yet
+                            // auto log in when signUp success
+                            $_SESSION['loggedin'] = true;
+                            $_SESSION['user'] = $username;
+                            header("Location: index.php"); // redirection
+                        }
                     }
                 }
                 include "disconnectToDB.php";
@@ -73,8 +78,14 @@
 
                 $sql = "insert into account values( '" . $id . "' , '" . $username . "' , '" . $password . "' , '" . $email . "' , '' )";
                 $query = mysqli_query( $con , $sql );
-                if ( $query ) return true;
-                else return false;
+                if ( $query ) {
+                    $GLOBALS["createAccountSuc"] = "Account create successfully!!<br>";
+                    return true;
+                }
+                else {
+                    $GLOBALS["createAccountErr"] = "Create account failed , please try again.<br>";
+                    return false;
+                }
             }
             function checkUsername( $con , $username ) {
                 if ( $username == "" ) $GLOBALS['usernameErr'] = "Username can not be blank!!<br>";
@@ -102,11 +113,11 @@
                     return;
                 }
                 if ( strlen( $pasw ) <= 7 ) { // check at least 8 characters
-                    $GLOBALS['passwordErr'] = "Invalid password!!<br>";
+                    $GLOBALS['passwordErr'] = "Must at least 8 characters!!<br>";
                     return;
                 }
                 if ( ( !preg_match( '/[A-Z]/' , $pasw ) || !preg_match( '/[a-z]/' , $pasw ) ) && !preg_match( '/[0-9]/', $pasw ) ) {
-                    $GLOBALS['passwordErr'] = "Invalid password!!<br>";
+                    $GLOBALS['passwordErr'] = "Must contain one letter and one digit!!<br>";
                     return;
                 }
             }
@@ -122,23 +133,27 @@
                     <div class="col-xs-6" style="text-align: left;">
                         <h2>Build for everyone!!<br></h2>
                         <h3>Our goal is to create a platform for everyone to talk with.<br> You can talk to people around the world by using <strong>message-board</strong>.<br> Sign up or Sign in to enjoy our service!!.</h3>
-                        <!--p strong-->
                         <br><br><br>
                     </div>
                     <div class="col-xs-6 signUp">
                         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                             <span >Username</span><br>
                             <input type="text" name="_username" placeholder="Pick a username" value="<?php echo $username; ?>"><br>
-                            <?php if ( $usernameErr != "" ) echo "<div class='signUPvalid'>" . $usernameErr . "</div>"; ?> <!--username need to be unique-->
+                            <?php if ( $usernameErr != "" ) echo "<div class='signUpInvalid'>" . $usernameErr . "</div>"; ?> <!--username need to be unique-->
 
                             <span>Email</span><br>
                             <input type="text" name="_email" placeholder="you@example.com" value="<?php echo $email; ?>"><br>
-                            <?php if ( $emailErr != "" ) echo "<div class='signUPvalid'>" . $emailErr . "</div>"; ?> <!--email need to be unique-->
+                            <?php if ( $emailErr != "" ) echo "<div class='signUpInvalid'>" . $emailErr . "</div>"; ?> <!--email need to be unique-->
 
                             <span>Password</span><br>
                             <input type="password" name="_password" placeholder="Create a password"><br>
                             <div class="passwordWarn">use at least one letter , one numeral and six characters</div>
-                            <?php if ( $passwordErr != "" ) echo "<div class='signUPvalid'>" . $passwordErr . "</div>"; ?> <!--password need to be valid-->
+                            <?php if ( $passwordErr != "" ) echo "<div class='signUpInvalid'>" . $passwordErr . "</div>"; ?> <!--password need to be valid-->
+
+                            <?php
+                                if ( $createAccountErr != "" ) echo "<div class='signUpInvalid'>" . $createAccountErr . "</div>";
+                                else if ( $createAccountSuc != "" ) echo "<div class='signUpValid'>" . $createAccountSuc . "</div>";
+                             ?>
 
                             <button type="submit" class="btn btn-default" name="SUBMIT_signup">Sign up for message-board</button>
                         </form>

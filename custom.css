@@ -50,8 +50,11 @@ footer {
     text-align: center;
     margin: 0px;
 }
-.signUPvalid {
-    color: #ff0202;
+.signUpInvalid {
+    color: red;
+}
+.signUpValid {
+    color: green;
 }
 .passwordWarn {
     font-size: 13px;
