@@ -17,8 +17,8 @@
 
                 include "connectToDB.php";
 
-                $username = $_POST["_username"]; // get data
-                $password = $_POST["_password"]; // get data
+                $username = getData( $con , $_POST["_username"] );
+                $password = getData( $con , $_POST["_password"] );
 
                 $sql = "select * from account where username = '" . $username . "'";
                 $query = mysqli_query( $con , $sql ); // check if user exists
@@ -34,6 +34,12 @@
                 }
 
                 include "disconnectToDB.php";
+            }
+            function getData( $con , $data ) { // prevent xss and sql injection
+                $data = stripslashes( $data ); // remove all \
+                $data = htmlspecialchars( $data ); // turn &"'<> to real entity
+                $data = mysqli_real_escape_string( $con , $data );
+                return $data;
             }
             function checkUsername( $username , $dbUsername ) {
                 if ( $username == "" ) $GLOBALS["usernameErr"] = "Username can't be blank!!<br>";
