@@ -48,9 +48,9 @@
             if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["SUBMIT_signup"] ) ) { // active when submit
                 include "connectToDB.php";
 
-                $username = $_POST["_username"]; // get data
-                $email = $_POST["_email"]; // get data
-                $password = $_POST['_password']; // get data
+                $username = getData( $con , $_POST["_username"] );
+                $email = getData( $con , $_POST["_email"] );
+                $password = getData( $con , $_POST['_password'] );
 
                 checkUsername( $con , $username );
                 checkEmail( $con , $email );
@@ -68,6 +68,12 @@
                     }
                 }
                 include "disconnectToDB.php";
+            }
+            function getData( $con , $data ) { // prevent xss and sql injection
+                $data = stripslashes( $data ); // remove all \
+                $data = htmlspecialchars( $data ); // turn &"'<> to real entity
+                $data = mysqli_real_escape_string( $con , $data );
+                return $data;
             }
             function insertAccountInfo( $con , $username , $email , $password ) {
                 $query = mysqli_query( $con , "select max( userid ) from account" ); // select newest user id
