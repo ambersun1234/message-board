@@ -33,7 +33,7 @@
             getData( $con );
 
             if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["submit"] ) ) { // active when submit
-                writeData();
+                writeData( $con );
                 checkUsername( $username , $dbUsername , $con );
                 checkEmail( $email , $dbEmail , $con );
                 checkPassword( $oldPassword , $newPassword , $cnewPassword , $dbPassword , $con );
@@ -156,12 +156,18 @@
                 if ( $type == "jpg" || $type == "jpeg" || $type == "png" ) return true;
                 else return false;
             }
-            function writeData() { // write into php variables
-                $GLOBALS["username"] = $_POST["_username"];
-                $GLOBALS["email"] = $_POST["_email"];
-                $GLOBALS["oldPassword"] = $_POST["_oldPassword"];
-                $GLOBALS["newPassword"] = $_POST["_newPassword"];
-                $GLOBALS["cnewPassword"] = $_POST["_cnewPassword"];
+            function writeData( $con ) { // write into php variables
+                $GLOBALS["username"] = getData2( $con , $_POST["_username"] );
+                $GLOBALS["email"] = getData2( $con , $_POST["_email"] );
+                $GLOBALS["oldPassword"] = getData2( $con , $_POST["_oldPassword"] );
+                $GLOBALS["newPassword"] = getData2( $con , $_POST["_newPassword"] );
+                $GLOBALS["cnewPassword"] = getData2( $con , $_POST["_cnewPassword"] );
+            }
+            function getData2( $con , $data ) { // prevent xss and sql injection
+                $data = stripslashes( $data ); // remove all \
+                $data = htmlspecialchars( $data ); // turn &"'<> to real entity
+                $data = mysqli_real_escape_string( $con , $data );
+                return $data;
             }
             include "disconnectToDB.php";
          ?>
