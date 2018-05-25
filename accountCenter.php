@@ -22,7 +22,90 @@
             if ( $_SESSION['loggedin'] == false ) header("Location: signIn.php");
          ?>
 
-        <?php
+
+        <?php // delete account
+           if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["submitDelete"] ) ) { // active when submit
+              include "connectToDB.php";
+
+              $usernameOrEmailD = $usernameOrEmailDErr = "";
+              $deleteMyAccountD = $deleteMyAccountDErr = "";
+              $passwordD = $passwordDErr = "";
+
+              $usernameOrEmailD = getDataD( $con , $_POST["_usernameOrEmail"] );
+              $deleteMyAccountD  = getDataD( $con , $_POST["_deleteMyAccount"] );
+              $passwordD = getDataD( $con , $_POST["_password"] );
+
+              $sql = "select * from account where ( username = '" . $usernameOrEmailD . "' or email = '" . $usernameOrEmailD . "' ) and username = '" . $_SESSION['user'] . "'";
+              $query = mysqli_query( $con , $sql );
+              $row = $query->fetch_assoc();
+              $id = $row["userid"];
+              $result = $query->num_rows;
+
+              checkUsernameOrEmailD( $result );
+              checkPatternD( $deleteMyAccountD , "delete my account" );
+              checkPasswordD( $passwordD , $row["password"] );
+
+              if ( checkValidD() ) deleteAccountD( $con , $id );
+
+              include "disconnectToDB.php";
+          }
+        //-------------------------------------------------------------------------------------------------------------------
+          function checkValidD() {
+              if ( $GLOBALS["usernameOrEmailDErr"] != "" || $GLOBALS["deleteMyAccountDErr"] != "" || $GLOBALS["passwordDErr"] != "" || $GLOBALS["deleteD"] ) return false;
+              else return true;
+          }
+          function checkUsernameOrEmailD( $result ) {
+              if ( $result < 1 ) {// username or email not found in database
+                  $GLOBALS["deleteD"] = "Delete failed!!<br>"; // set error message
+                  $GLOBALS["usernameOrEmailDErr"] = "User or email not found!!<br>";
+              }
+              else $GLOBALS["usernameOrEmailDErr"] = $GLOBALS["deleteD"] = "";
+          }
+          function checkPatternD( $deleteMyAccount , $pattern ) {
+              if ( $deleteMyAccount != $pattern ) {
+                  $GLOBALS["deleteD"] = "Delete failed!!<br>";
+                  $GLOBALS["deleteMyAccountDErr"] = "Pattern not matched!!<br>";
+              }
+              else $GLOBALS["deleteMyAccountDErr"] = $GLOBALS["deleteD"] = "";
+          }
+          function checkPasswordD( $password , $dbPassword ) {
+              if ( !password_verify( $password , $dbPassword ) ) {
+                  $GLOBALS["deleteD"] = "Delete failed!!<br>";
+                  $GLOBALS["passwordDErr"] = "Incorrect confirm password!!<br>";
+              }
+              else $GLOBALS["passwordDErr"] = $GLOBALS["deleteD"] = "";
+          }
+          function deleteAccountD( $con , $id ) {
+              $sql = "delete from command where userid = '" . $id . "'"; // delete command sql
+              $query = mysqli_query( $con , $sql );
+              if ( $query ) { // delete command success
+                  $sql = "delete from post where userid = '" . $id . "'";
+                  $query = mysqli_query( $con , $sql );
+                  if ( $query ) { // delete post success
+                      $sql = "delete from account where userid = '" . $id . "'";
+                      $query = mysqli_query( $con , $sql );
+                      if ( !$query ) $GLOBALS["deleteD"] = "Something went wrong , please submit again...3<br>";
+                  }
+                  else $GLOBALS["deleteD"] = "Something went wrong , please submit again...2<br>";
+              }
+              else $GLOBALS["deleteD"] = "Something went wrong , please submit again...1<br>";
+
+              // check $GLOBALS["deleteD"] status , decide redirection
+              if ( $GLOBALS["deleteD"] == "" ) {
+                  session_unset(); // clear all session
+                  header("Location: index.php");
+              }
+          }
+
+          function getDataD( $con , $data ) { // prevent xss and sql injection
+              $data = stripslashes( $data ); // remove all \
+              $data = htmlspecialchars( $data ); // turn &"'<> to real entity
+              $data = mysqli_real_escape_string( $con , $data );
+              return $data;
+          }
+        ?>
+<!-------------------------------------------------------------------------------------------------------------------------------------------------->
+        <?php // update account
             include "connectToDB.php";
 
             $userid = 0;
@@ -177,13 +260,13 @@
 
          <div class="accountCenter">
              <div class="container">
-                <form class="myform" method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
+                <form class="myform" method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] );?>" enctype="multipart/form-data">
                      <div class="col-xs-3" style="padding: 5px 5px;">
                          <h3 style="text-align: center;">Profile Picture</h3>
                          <?php echo "<img src='/images/" . $imageFilePath . "'>"?>
                          <input accept="image/jpeg,image/png,image/jpg" type="file" name="fileToUpload">
                          <?php
-                            if ( $fileErr != "" ) echo "<div class='changeInvalid' style='text-align: center;'>" . $fileErr . "</div>";
+                            if ( $fileErr != "" ) echo "<div class='invalid' style='text-align: center;'>" . $fileErr . "</div>";
                             else if ( $fileSuc != "" ) echo "<div class='valid' style='text-align: center;'>" . $fileSuc . "</div>";
                           ?>
                      </div>
@@ -194,14 +277,14 @@
                          Username:<br>
                          <input type="text" name="_username" placeholder="Pick a username" value="<?php echo $username; ?>"><br>
                          <?php
-                            if ( $usernameErr != "" ) echo "<div class='changeInvalid'>" . $usernameErr . "</div>";
+                            if ( $usernameErr != "" ) echo "<div class='invalid'>" . $usernameErr . "</div>";
                             else if ( $usernameSuc != "" ) echo "<div class='valid'>" . $usernameSuc . "</div>";
                           ?>
 
                          Email:<br>
                          <input type="text" name="_email" placeholder="you@gmail.com" value="<?php echo $email; ?>"><br>
                          <?php
-                            if ( $emailErr != "" ) echo "<div class='changeInvalid'>" . $emailErr . "</div>";
+                            if ( $emailErr != "" ) echo "<div class='invalid'>" . $emailErr . "</div>";
                             else if ( $emailSuc != "" ) echo "<div class='valid'>" . $emailSuc . "</div>";
                           ?>
 
@@ -212,16 +295,16 @@
                          <hr>
                          Old password:
                          <input type="password" placeholder="your old password" name="_oldPassword"><br>
-                         <?php echo "<div class='changeInvalid'>" . $oldPasswordErr . "</div>"; ?>
+                         <?php echo "<div class='invalid'>" . $oldPasswordErr . "</div>"; ?>
 
                          New password:
                          <input type="password" placeholder="your new password" name="_newPassword"><br>
                          <div class="passwordWarn">use at least one letter , one numeral and six characters</div>
-                         <?php echo "<div class='changeInvalid'>" . $newPasswordErr . "</div>"; ?>
+                         <?php echo "<div class='invalid'>" . $newPasswordErr . "</div>"; ?>
 
                          Confirm new password:
                          <input type="password" placeholder="confirm your new password" name="_cnewPassword"><br>
-                         <?php echo "<div class='changeInvalid'>" . $cnewPasswordErr . "</div>"; ?>
+                         <?php echo "<div class='invalid'>" . $cnewPasswordErr . "</div>"; ?>
                          <?php echo "<div class='valid'>" . $passwordSuc . "</div>"; ?>
                          <br>
                          <button class="btn bth-default update_button" type="submit" name="submit">Update</button>
@@ -239,17 +322,20 @@
                          </div>
                          <br>
 
-                         <form method="post" action="deleteAccount.php" enctype="multipart/form-data">
+                         <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] );?>" enctype="multipart/form-data">
                              <b>Your Username or email:</b><br>
-                             <input type="text" placeholder="Your username or email" name="_usernameOrEmail" value="<?php echo $_SESSION['deleteUsernameOrAccount']; ?>"><br>
+                             <input type="text" placeholder="Your username or email" name="_usernameOrEmail" value="<?php echo $usernameOrEmailD; ?>"><br>
+                             <?php if ( isset( $usernameOrEmailDErr ) ) echo "<div class='invalid'>" . $usernameOrEmailDErr . "</div>"; ?>
 
                              <b>To verify , type</b> delete my account <b>below</b>.
-                             <input type="text" placeholder="delete my account" name="_deleteMyAccount" value="<?php echo $_SESSION['deleteDeleteMyAccount']; ?>"><br>
+                             <input type="text" placeholder="delete my account" name="_deleteMyAccount" value="<?php echo $deleteMyAccountD; ?>"><br>
+                             <?php if ( isset( $deleteMyAccountDErr ) ) echo "<div class='invalid'>" . $deleteMyAccountDErr . "</div>"; ?>
 
                              <b>Comfirm your password</b>
-                             <input type="password" placeholder="Your account password" name="_password"><br><br>
+                             <input type="password" placeholder="Your account password" name="_password"><br>
+                             <?php if ( isset( $passwordDErr ) ) echo "<div class='invalid'>" . $passwordDErr . "</div>"; ?>
 
-                             <button class="btn bth-default update_button" type="submit" name="submit">Delete your account</button><?php echo "<div class='invalid'>" . $_SESSION["delete"] . "</div>"; ?>
+                             <br><button class="btn bth-default btn-md update_button" style="background-color: red; color: white; border-color: black;" type="submit" name="submitDelete">Delete your account</button><?php echo "<div class='invalid'>" . $deleteD . "</div>"; ?>
                         </form>
                     </div>
             </div>
