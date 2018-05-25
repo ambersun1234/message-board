@@ -10,6 +10,9 @@
 
         <!-- Bootstrap core CSS -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     </head>
 
     <body style="background-color: #f9f9f9">
@@ -174,7 +177,7 @@
 
          <div class="accountCenter">
              <div class="container">
-                <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
+                <form class="myform" method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
                      <div class="col-xs-3" style="padding: 5px 5px;">
                          <h3 style="text-align: center;">Profile Picture</h3>
                          <?php echo "<img src='/images/" . $imageFilePath . "'>"?>
@@ -185,7 +188,7 @@
                           ?>
                      </div>
 
-                     <div class="col-xs-6" style="padding: 5px 5px;">
+                     <div class="col-xs-8" style="padding: 5px 5px;">
                          <h3>Profile</h3>
                          <hr>
                          Username:<br>
@@ -202,8 +205,8 @@
                             else if ( $emailSuc != "" ) echo "<div class='valid'>" . $emailSuc . "</div>";
                           ?>
 
-                         <?php echo "Total post number = " . $postNumber . "<br>" ?>
-                         <?php echo "Total command number = " . $commandNumber . "<br>" ?>
+                         <?php echo "Total post number = " . $postNumber . "<br>"; ?>
+                         <?php echo "Total command number = " . $commandNumber . "<br>"; ?>
 
                          <h3>Change Password</h3>
                          <hr>
@@ -220,12 +223,36 @@
                          <input type="password" placeholder="confirm your new password" name="_cnewPassword"><br>
                          <?php echo "<div class='changeInvalid'>" . $cnewPasswordErr . "</div>"; ?>
                          <?php echo "<div class='valid'>" . $passwordSuc . "</div>"; ?>
-
-
+                         <br>
                          <button class="btn bth-default update_button" type="submit" name="submit">Update</button>
-                     </div>
-                </form>
+
+                    </form>
+<!---------------------------------------------------------------------------------------------------------->
+                         <h3 class="deletAccount">Delete your account</h3>
+                         <hr>
+                         Once you delete your account, there is no going back. Please be certain.<br><br>
+
+                         <div class="deleteAccountWarning">
+                             <i class="fa fa-exclamation-triangle">This is extremely important.</i><br><br>
+                             We will <b>immediately delete all of your post and command message</b><br><br>
+                             You will no longer be billed , and your username will be available to anyone on Message Board.<br>
+                         </div>
+                         <br>
+
+                         <form method="post" action="deleteAccount.php" enctype="multipart/form-data">
+                             <b>Your Username or email:</b><br>
+                             <input type="text" placeholder="Your username or email" name="_usernameOrEmail"><br>
+
+                             <b>To verify , type</b> delete my account <b>below</b>.
+                             <input type="text" placeholder="delete my account" name="_deleteMyAccount"><br>
+
+                             <b>Comfirm your password</b>
+                             <input type="password" placeholder="Your account password" name="_password"><br><br>
+
+                             <button class="btn bth-default update_button" type="submit" name="submit">Update</button><?php echo "<div class='invalid'>" . $_SESSION["delete"] . "</div>"; ?>
+                        </form>
+                    </div>
             </div>
-         </div>
+        </div>
     </body>
 </html>

@@ -19,7 +19,7 @@ footer {
 #onemillion{
   background-color: #ff5511;
 }
-.accountCenter form {
+.myform {
     width: 85%;
     margin: auto;
     padding-top: 10px;
@@ -35,6 +35,16 @@ footer {
 }
 .invalid {
     color: red;
+}
+.deletAccount {
+    font-weight: bold;
+    color: red;
+}
+.deleteAccountWarning {
+    background-color: #ffdce0;
+    padding: 27px;
+    color: #86181d;
+    font-size: 17px;
 }
 .accountCenter hr {
     border-color: #bababa;
