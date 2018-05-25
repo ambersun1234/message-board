@@ -241,15 +241,15 @@
 
                          <form method="post" action="deleteAccount.php" enctype="multipart/form-data">
                              <b>Your Username or email:</b><br>
-                             <input type="text" placeholder="Your username or email" name="_usernameOrEmail"><br>
+                             <input type="text" placeholder="Your username or email" name="_usernameOrEmail" value="<?php echo $_SESSION['deleteUsernameOrAccount']; ?>"><br>
 
                              <b>To verify , type</b> delete my account <b>below</b>.
-                             <input type="text" placeholder="delete my account" name="_deleteMyAccount"><br>
+                             <input type="text" placeholder="delete my account" name="_deleteMyAccount" value="<?php echo $_SESSION['deleteDeleteMyAccount']; ?>"><br>
 
                              <b>Comfirm your password</b>
                              <input type="password" placeholder="Your account password" name="_password"><br><br>
 
-                             <button class="btn bth-default update_button" type="submit" name="submit">Update</button><?php echo "<div class='invalid'>" . $_SESSION["delete"] . "</div>"; ?>
+                             <button class="btn bth-default update_button" type="submit" name="submit">Delete your account</button><?php echo "<div class='invalid'>" . $_SESSION["delete"] . "</div>"; ?>
                         </form>
                     </div>
             </div>

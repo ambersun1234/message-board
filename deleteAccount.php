@@ -1,9 +1,52 @@
 <?php
     session_start();
+    /*  session variables
+     *
+     *  session -- delete
+     *  session -- deleteUsernameOrAccount
+     *  session -- deleteDeleteMyAccount
+     *  session -- loggedin
+     *  session -- user
+     */
 
-    $usernameOrEmail = getData( $con , $_POST["_usernameOrEmail"] );
-    $deleteMyAccount = getData( $con , $_POST["_deleteMyAccount"] );
-    $password = getData( $con , $_POST["_password"] );
+     if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["submit"] ) && $_SESSION["loggedin"] == true ) { // active when submit
+        include "connectToDB.php";
+
+        $check = false;
+
+        $usernameOrEmail = $_SESSION["deleteUsernameOrAccount"] = getData( $con , $_POST["_usernameOrEmail"] );
+        $deleteMyAccount = $_SESSION["deleteDeleteMyAccount"] = getData( $con , $_POST["_deleteMyAccount"] );
+        $password = getData( $con , $_POST["_password"] );
+
+        $sql = "select * from account where ( username = '" . $usernameOrEmail . "' or email = '" . $usernameOrEmail . "' ) and username = '" . $_SESSION['user'] . "'";
+        $query = mysqli_query( $con , $sql );
+        $row = $query->fetch_assoc();
+        $result = $query->num_rows;
+
+        if ( $result < 1 ) {// username or email not found in database
+            $_SESSION["delete"] = "Delete failed!!<br>"; // set error message
+        }
+        else { // account found
+            if ( $deleteMyAccount != "delete my account" ) { // check "delete my account"
+                $_SESSION["delete"] = "Delete failed!!<br>";
+            }
+            else {
+                if ( !password_verify( $password , $row["password"] ) ) { // check password
+                    $_SESSION["delete"] = "Delete account failed!!<br>";
+                }
+                else {
+                    $_SESSION["delete"] = "success<br>";
+                    $check = true;
+                }
+            }
+        }
+        header("Location: accountCenter.php");
+        if ( !$check ) header("Location: accountCenter.php"); // redirect to accountCenter.php
+        else deleteAccount();
+
+        include "disconnectToDB.php";
+    }
+    else header("Location: index.php"); // redirect to index.php
 
     function getData( $con , $data ) { // prevent xss and sql injection
         $data = stripslashes( $data ); // remove all \
