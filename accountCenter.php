@@ -106,8 +106,6 @@
         ?>
 <!-------------------------------------------------------------------------------------------------------------------------------------------------->
         <?php // update account
-            include "connectToDB.php";
-
             $userid = 0;
             $dbUsername = $dbEmail = $dbPassword = "";
             $username = $email = $oldPassword = $newPassword = $cnewPassword = $imageFilePath = "";
@@ -116,6 +114,7 @@
             $usernameFail = $emailFail = $passwordFail = "";
             $postNumber = $commandNumber = 0;
 
+            include "connectToDB.php";
             getData( $con );
 
             if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["submit"] ) ) { // active when submit
@@ -129,6 +128,7 @@
                 }
                 getData( $con );
             }
+            include "disconnectToDB.php";
 
             function getData( $con ) {
                 $sql = "select * from account where username = '" . $_SESSION['user'] . "'";
@@ -150,7 +150,7 @@
                 $row = $query->fetch_assoc();
                 $GLOBALS["postNumber"] = $row["total"];
                 //---------------------------------------------------------------------------------
-                $sql = "select count(*) as total from command where userid = '" . $GLOBALS["userid"] . "'";
+                $sql = "select count(*) as total from comment where userid = '" . $GLOBALS["userid"] . "'";
                 $query = mysqli_query( $con , $sql );
                 $row = $query->fetch_assoc();
                 $GLOBALS["commandNumber"] = $row["total"];
@@ -255,9 +255,7 @@
                 $data = mysqli_real_escape_string( $con , $data );
                 return $data;
             }
-            include "disconnectToDB.php";
          ?>
-
          <div class="accountCenter">
              <div class="container">
                 <form class="myform" method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] );?>" enctype="multipart/form-data">
