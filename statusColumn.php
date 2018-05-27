@@ -11,7 +11,16 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse tool_bar">
             <ul class="nav navbar-nav navbar-left">
-                <li><a href="/index.php#board">BOARD</a></li> <!--jump to 所有看板-->
+                <li><a href="/index.php#board">BOARD</a></li> <!--jump to all board-->
+            </ul>
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/Gaming.php">Gaming board</a></li> <!--jump to Gaming board-->
+            </ul>
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/News.php">News board</a></li> <!--jump to New board-->
+            </ul>
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/Gossip.php">Gossip board</a></li> <!--jump to Gossip board-->
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php
