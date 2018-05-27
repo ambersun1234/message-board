@@ -19,6 +19,17 @@ footer {
 #onemillion{
   background-color: #ff5511;
 }
+.post {
+    padding-left: 20%;
+}
+.postview {
+    color: #000000;
+    background-color: #ffffff;
+    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
 .add_artical {
     margin: auto;
     width: 45%;

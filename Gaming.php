@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <html lang="en">
 <html>
     <head>
@@ -14,10 +15,43 @@
     <body style="background-color: #f9f9f9;">
         <?php include "statusColumn.php" ?>
 
-        <div class="col-xs-9">
+        <div class="col-xs-9 post">
+            <br>
+            <?php
+                include "connectToDB.php";
+
+                // find all post in gaming
+                $sql = "select userid , postid , title , date_time as time from post where boardid = 'gaming' order by time DESC";
+                $query = mysqli_query( $con , $sql );
+
+                if ( $query->num_rows > 0 ) { // post found
+                    while ( $row = $query->fetch_assoc() ) { // show all post
+                        $username = getUsername( $con , $row["userid"] );
+                        echo "<div class='postview'>";
+                            echo "<a href='/displayPost.php?var1=" . $row["postid"] . "'>" . $row["title"] . "</a><br>";
+                            echo "<p style='text-align: left;'>"; // same line but left
+                                echo $username;
+                            echo "<span style='float: right;'>"; // same line but right
+                                echo $row["time"];
+                            echo "</span></p>";
+                        echo "</div>";
+                    }
+                }
+                else echo "There is no post yet!!<br>";
+
+                function getUsername( $con , $id ) {
+                    $sql = "select username from account where userid = '" . $id . "'";
+                    $query = mysqli_query( $con , $sql );
+                    $row = $query->fetch_assoc();
+                    return $row["username"];
+                }
+
+                include "disconnectToDB.php";
+             ?>
         </div>
         <div class="col-xs-3">
-            <button type="button" class="btn btn-default" onclick="location.href='add_artical.php'">add new post</button>
+            <br>
+            <button type="button" class="btn btn-default" onclick="location.href='add_artical.php?var1=gaming'" style="background-color: #ff6060; color: #ffffff;">add new post</button>
         </div>
 
     </body>
