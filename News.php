@@ -9,7 +9,7 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <title>Gaming board</title>
+        <title>News board</title>
 
     </head>
     <body style="background-color: #f9f9f9;">
@@ -21,7 +21,7 @@
                 include "connectToDB.php";
 
                 // find all post in gaming
-                $sql = "select userid , postid , title , date_time as time from post where boardid = 'gaming' order by time DESC";
+                $sql = "select userid , postid , title , date_time as time from post where boardid = 'news' order by time DESC";
                 $query = mysqli_query( $con , $sql );
 
                 if ( $query->num_rows > 0 ) { // post found
@@ -51,7 +51,7 @@
         </div>
         <div class="col-xs-3">
             <br>
-            <button type="button" class="btn btn-default" onclick="location.href='add_artical.php?var1=Gaming'" style="background-color: #ff6060; color: #ffffff;">add new post</button>
+            <button type="button" class="btn btn-default" onclick="location.href='add_artical.php?var1=News'" style="background-color: #ff6060; color: #ffffff;">add new post</button>
         </div>
 
     </body>
