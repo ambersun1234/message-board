@@ -107,7 +107,7 @@
                 <br>
                 article:<br>
                 ( article must have at least 10 words )<br>
-                <textarea name="_artical"><?php echo $article;?></textarea><br>
+                <textarea name="_artical" rows="15"><?php echo $article;?></textarea><br>
                 <?php echo "<div class='invalid'>" . $articleErr . "</div>"; ?>
 
                 <!-- pass var1 to php after submit form -->
