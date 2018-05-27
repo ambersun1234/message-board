@@ -46,14 +46,14 @@
                         $query = mysqli_query( $con , $sql );
 
                         if ( !$query ) $postErr = "Something went wrong , please try again...<br>";
-                        else header("Location: Gaming.php");
+                        else header("Location: " . $boardid . ".php");
                     }
                 }
 
                 include "disconnectToDB.php";
             }
             function checkBoard( $board ) {
-                if ( $board == "gaming" || $board == "news" || $board == "gossip" ) return true;
+                if ( $board == "Gaming" || $board == "News" || $board == "Gossip" ) return true;
                 else {
                     $GLOBALS["postErr"] = "Something went wrong , please try again...<br>";
                     return false;
@@ -98,7 +98,7 @@
         <?php include "statusColumn.php"; ?>
 
         <div class="add_artical">
-            <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] );?>">
+            <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] ) . '?var1=' . $_GET['var1'];?>">
                 <br>title:<br>
                 <!-- note: textarea does not have value attribute , so php echo should write in the middle of textarea -->
                 <textarea name="_title" rows="1" cols="1" maxlength="30"><?php echo $title; ?></textarea><br>
