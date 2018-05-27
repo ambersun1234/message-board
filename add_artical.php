@@ -114,7 +114,7 @@
                 <input type="hidden" name="_boardid" value="<?php echo $_GET['var1'];?>">
 
                 <br>
-                <button type="submit" name="SUBMIT" class="btn btn-default">Submit</button>
+                <button type="submit" name="SUBMIT" class="btn btn-default" style="background-color: #ff6060; color: #ffffff;">Submit</button>
                 <button type="reset" class="btn btn-default">Reset</button>
                 <?php echo "<div class='invalid'>" . $postErr . "</div>"; ?>
             </form>
