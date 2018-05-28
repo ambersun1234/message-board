@@ -78,6 +78,7 @@
                 $data = stripslashes( $data ); // remove all \
                 $data = htmlspecialchars( $data ); // turn &"'<> to real entity
                 $data = mysqli_real_escape_string( $con , $data );
+                $data = str_replace( '\r\n' , '<br>' , $data ); // replace new line
                 return $data;
             }
             function checkTitle( $title ) {
