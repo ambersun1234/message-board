@@ -77,12 +77,15 @@
                 $sql = "select a.username , a.image , p.postid , c.date_time , c.text ";
                 $sql .= "from post p , comment c , account a " ;
                 $sql .= "where p.postid = " . $postid . " and p.postid = c.postid and c.userid = a.userid ";
-                $sql .= "order by c.date_time desc";
+                $sql .= "order by c.commentid";
                 $query = mysqli_query( $con , $sql );
 
                 if ( $query->num_rows > 0 ) { // find comment
                     while ( $row = $query->fetch_assoc() ) {
-                        echo "<img src='/images/" . $row["image"] . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "<br>";
+                        if ( $row["image"] == "" ) $image = "default.jpeg";
+                        else $image = $row["image"];
+
+                        echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "<br>";
                     }
                 }
                 else echo "There is no comment yet.<br>";
