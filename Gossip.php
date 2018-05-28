@@ -28,7 +28,7 @@
                     while ( $row = $query->fetch_assoc() ) { // show all post
                         $username = getUsername( $con , $row["userid"] );
                         echo "<div class='postview'>";
-                            echo "<a href='/displayPost.php?var1=" . $row["postid"] . "'>" . $row["title"] . "</a><br>";
+                            echo '<a href="/displayPost.php?var1=' . $row['postid'] . '&title=' . $row['title'] . '">' . $row['title'] . '</a><br>';
                             echo "<p style='text-align: left;'>"; // same line but left
                                 echo $username;
                             echo "<span style='float: right;'>"; // same line but right
