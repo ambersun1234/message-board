@@ -74,7 +74,7 @@
              <?php
                 include "connectToDB.php";
 
-                $sql = "select a.username , p.postid , c.date_time , c.text ";
+                $sql = "select a.username , a.image , p.postid , c.date_time , c.text ";
                 $sql .= "from post p , comment c , account a " ;
                 $sql .= "where p.postid = " . $postid . " and p.postid = c.postid and c.userid = a.userid ";
                 $sql .= "order by c.date_time desc";
@@ -82,7 +82,7 @@
 
                 if ( $query->num_rows > 0 ) { // find comment
                     while ( $row = $query->fetch_assoc() ) {
-                        echo $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "<br>";
+                        echo "<img src='/images/" . $row["image"] . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "<br>";
                     }
                 }
                 else echo "There is no comment yet.<br>";
