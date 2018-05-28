@@ -22,27 +22,36 @@
             <ul class="nav navbar-nav navbar-left">
                 <li><a href="/displayBoard.php?boardid=Gossip">Gossip board</a></li> <!--jump to Gossip board-->
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <?php
-                    echo '<link rel="stylesheet" type="text/css" href="custom.css">';
+            <?php
+                echo '<link rel="stylesheet" type="text/css" href="custom.css">';
 
-                    /*
-                     *  check whether login or not
-                     *  if not login yet --> show 登入( signIn.php ) 註冊( signUp.php )
-                     *  else --> show username and logout( signOut.php )
-                     *  $_SESSION has two variables: loggedin & user
-                     *  if user logged in --> $_SESSION['loggedin'] = true & $_SESSION['user'] = $username
-                     */
-                    if ( isset( $_SESSION['loggedin'] ) && $_SESSION['loggedin'] == true ) {
-                        echo '<li><a href="/accountCenter.php">' . $_SESSION['user'] . '</a></li>';
+                /*
+                 *  check whether login or not
+                 *  if not login yet --> show 登入( signIn.php ) 註冊( signUp.php )
+                 *  else --> show username and logout( signOut.php )
+                 *  $_SESSION has two variables: loggedin & user
+                 *  if user logged in --> $_SESSION['loggedin'] = true & $_SESSION['user'] = $username
+                 */
+                if ( isset( $_SESSION['loggedin'] ) && $_SESSION['loggedin'] == true ) {
+                    echo '<ul class="nav navbar-nav navbar-right">';
                         echo '<li><a href="signOut.php">log out</a></li>';
-                    }
-                    else {
-                        echo '<li><a href="signIn.php">Sign in</a></li>';
+                    echo '</ul>';
+                    echo '<ul class="nav navbar-nav navbar-right">';
+                        echo '<li><a href="/accountCenter.php">' . $_SESSION['user'] . '</a></li>';
+                    echo '</ul>';
+                    echo '<ul class="nav navbar-nav navbar-right">';
+                        echo '<li><a href="/accountCenter.php"><img src="/images/' . $_SESSION['image'] . '" alt="Profile picture" height="30" weight="25" align="middle"></a>';
+                    echo '</ul>';
+                }
+                else {
+                    echo '<ul class="nav navbar-nav navbar-right">';
                         echo '<li><a href="/index.php#signUp">Sign up</a></li>';
-                    }
-                ?>
-            </ul>
+                    echo '</ul>';
+                    echo '<ul class="nav navbar-nav navbar-right">';
+                        echo '<li><a href="signIn.php">Sign in</a></li>';
+                    echo '</ul>';
+                }
+            ?>
         </div>
     </div>
 </div>

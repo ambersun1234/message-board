@@ -30,6 +30,7 @@
                 if ( checkValid() ) {
                     $_SESSION["loggedin"] = true;
                     $_SESSION["user"] = $row["username"];
+                    $_SESSION["image"] = ( $row["image"] == "" ) ? "default.jpeg" : $row["image"];
                     header("Location: index.php"); //redirct to index.php
                 }
 
