@@ -9,7 +9,7 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <title>News board</title>
+        <title><?php echo $_GET["boardid"]; ?></title>
 
     </head>
     <body style="background-color: #f9f9f9;">
@@ -20,8 +20,10 @@
             <?php
                 include "connectToDB.php";
 
+                $boardid = getData( $con , $_GET["boardid"] );
+
                 // find all post in gaming
-                $sql = "select userid , postid , title , date_time as time from post where boardid = 'Gossip' order by time DESC";
+                $sql = "select userid , postid , title , date_time as time from post where boardid = '" . $boardid . "' order by time DESC";
                 $query = mysqli_query( $con , $sql );
 
                 if ( $query->num_rows > 0 ) { // post found
@@ -45,13 +47,19 @@
                     $row = $query->fetch_assoc();
                     return $row["username"];
                 }
+                function getData( $con , $data ) {
+                    $data = stripslashes( $data ); // remove all \
+                    $data = htmlspecialchars( $data ); // turn &"'<> to real entity
+                    $data = mysqli_real_escape_string( $con , $data );
+                    return $data;
+                }
 
                 include "disconnectToDB.php";
              ?>
         </div>
         <div class="col-xs-3">
             <br>
-            <button type="button" class="btn btn-default" onclick="location.href='add_artical.php?var1=Gossip'" style="background-color: #ff6060; color: #ffffff;">add new post</button>
+            <button type="button" class="btn btn-default" onclick="location.href='add_artical.php?var1=<?php echo $boardid; ?>'" style="background-color: #ff6060; color: #ffffff;">add new post</button>
         </div>
 
     </body>
