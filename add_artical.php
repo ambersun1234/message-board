@@ -82,11 +82,12 @@
             }
             function checkTitle( $title ) {
                 if ( $title == "" ) $GLOBALS["titleErr"] = "Title can not be blank!!<br>";
+                else if ( strlen( $title ) > 30 ) $GLOBALS["titleErr"] = "Title words can not exceed 30 words!!<br>";
                 else $GLOBALS["titleErr"] = "";
             }
             function checkArticle( $article ) {
                 if ( $article == "" ) $GLOBALS["articleErr"] = "Article can not be blank!!<br>";
-                else if ( strlen( $article ) < 10 ) $GLOBALS["articleErr"] = "Article must have at least 30 words!!<br>";
+                else if ( strlen( $article ) < 10 ) $GLOBALS["articleErr"] = "Article must have at least 10 words!!<br>";
                 else $GLOBALS["articleErr"] = "";
             }
             function checkValid( $titleErr , $articleErr ) {
