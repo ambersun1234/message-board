@@ -150,7 +150,10 @@
                 $row = $query->fetch_assoc();
                 $GLOBALS["postNumber"] = $row["total"];
                 //---------------------------------------------------------------------------------
-                $sql = "select count(*) as total from comment where userid = '" . $GLOBALS["userid"] . "'";
+                $sql = "select ( select count(*) from comment as c where c.userid = " . $GLOBALS["userid"] . " ) + ";
+                $sql .= "( select count(*) from reply as r where r.userid = " . $GLOBALS["userid"] . " ) ";
+                $sql .= "as total";
+
                 $query = mysqli_query( $con , $sql );
                 $row = $query->fetch_assoc();
                 $GLOBALS["commandNumber"] = $row["total"];
