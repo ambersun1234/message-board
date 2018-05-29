@@ -18,7 +18,14 @@
     </head>
 
     <body  style="background-color: #f9f9f9;">
-        <?php if ( $_SESSION["loggedin"] == false ) header("Location: index.php"); ?>
+        <?php
+            $location = "Location: displayBoard.php?boardid=" . $_GET["var1"];
+
+            if ( $_SESSION["loggedin"] == false ) {
+                $location = "Location: displayBoard.php?boardid=" . $_GET["var1"];
+                header( $location );
+            }
+         ?>
 
         <?php
             $title = $article = $boardid = "";
