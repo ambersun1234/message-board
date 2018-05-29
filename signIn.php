@@ -11,25 +11,26 @@
 
     <body style="background-color: #f9f9f9">
         <?php
-            $username = $password = "";
+            $usernameOrEmailErr = $password = "";
 
             if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["SUBMIT"] ) ) { // active when submit
 
                 include "connectToDB.php";
 
-                $username = getData( $con , $_POST["_username"] );
+                $usernameOrEmail = getData( $con , $_POST["_username"] );
                 $password = getData( $con , $_POST["_password"] );
 
-                $sql = "select * from account where username = '" . $username . "'";
+                $sql = "select * from account where username = '" . $usernameOrEmail . "' or email = '" . $usernameOrEmail . "'";
                 $query = mysqli_query( $con , $sql ); // check if user exists
                 $row = $query->fetch_assoc();
 
-                checkUsername( $username , $row["username"] );
+                checkUsername( $usernameOrEmail , $query->num_rows );
                 checkPassword( $password , $row["password"] );
 
                 if ( checkValid() ) {
                     $_SESSION["loggedin"] = true;
-                    $_SESSION["user"] = $username;
+                    $_SESSION["user"] = $row["username"];
+                    $_SESSION["image"] = ( $row["image"] == "" ) ? "default.jpeg" : $row["image"];
                     header("Location: index.php"); //redirct to index.php
                 }
 
@@ -41,9 +42,9 @@
                 $data = mysqli_real_escape_string( $con , $data );
                 return $data;
             }
-            function checkUsername( $username , $dbUsername ) {
-                if ( $username == "" ) $GLOBALS["usernameErr"] = "Username can't be blank!!<br>";
-                else if ( $username != $dbUsername ) $GLOBALS["usernameErr"] = "User not found!!<br>";
+            function checkUsername( $usernameOrEmail , $check ) {
+                if ( $usernameOrEmail == "" ) $GLOBALS["usernameOrEmailErr"] = "Username can't be blank!!<br>";
+                else if ( $check < 1 ) $GLOBALS["usernameOrEmailErr"] = "User not found!!<br>";
             }
             function checkPassword( $password , $password_hash ) { // use php function to check if password is correct or not
                 if ( $password == "" ) $GLOBALS["passwordErr"] = "Password can't be blank!!<br>";
@@ -60,11 +61,11 @@
 
         <div class="login">
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-                <span>Username</span><br>
-                <input type="text" name="_username" value="<?php echo $username ?>"><br>
-                <?php if ( isset( $usernameErr ) ) echo "<div class='invalid'>" . $usernameErr . "</div>"; ?>
+                <span>Username or email:</span><br>
+                <input type="text" name="_username" value="<?php echo $usernameOrEmail ?>"><br>
+                <?php if ( isset( $usernameOrEmailErr ) ) echo "<div class='invalid'>" . $usernameOrEmailErr . "</div>"; ?>
 
-                <span >Password</span><br>
+                <span >Password:</span><br>
                 <input type="password" name="_password"><br>
                 <?php if ( isset( $passwordErr ) ) echo "<div class='invalid'>" . $passwordErr . "</div>"; ?>
 

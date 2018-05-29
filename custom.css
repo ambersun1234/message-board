@@ -19,6 +19,35 @@ footer {
 #onemillion{
   background-color: #ff5511;
 }
+.white_space {
+    white-space: pre;
+}
+.displayPost {
+    margin: auto;
+    width: 60%;
+    padding: 10px;
+    font-size: 15px;
+}
+.post {
+    padding-left: 20%;
+}
+.postview {
+    color: #000000;
+    background-color: #ffffff;
+    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+.add_artical {
+    margin: auto;
+    width: 45%;
+    padding: 10px;
+}
+.add_artical form textarea {
+    width: 100%;
+    padding: 5px;
+}
 .myform {
     width: 85%;
     margin: auto;
