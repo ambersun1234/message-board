@@ -76,9 +76,9 @@
               else $GLOBALS["passwordDErr"] = $GLOBALS["deleteD"] = "";
           }
           function deleteAccountD( $con , $id ) {
-              $sql = "delete from command where userid = '" . $id . "'"; // delete command sql
+              $sql = "delete from comment where userid = '" . $id . "'"; // delete comment sql
               $query = mysqli_query( $con , $sql );
-              if ( $query ) { // delete command success
+              if ( $query ) { // delete comment success
                   $sql = "delete from post where userid = '" . $id . "'";
                   $query = mysqli_query( $con , $sql );
                   if ( $query ) { // delete post success
@@ -112,7 +112,7 @@
             $usernameErr = $emailErr = $oldPasswordErr = $newPasswordErr = $cnewPasswordErr = $fileErr = "";
             $usernameSuc = $emailSuc = $passwordSuc = $fileSuc = "";
             $usernameFail = $emailFail = $passwordFail = "";
-            $postNumber = $commandNumber = 0;
+            $postNumber = $commentNumber = 0;
 
             include "connectToDB.php";
             getData( $con );
@@ -156,7 +156,7 @@
 
                 $query = mysqli_query( $con , $sql );
                 $row = $query->fetch_assoc();
-                $GLOBALS["commandNumber"] = $row["total"];
+                $GLOBALS["commentNumber"] = $row["total"];
             }
 
             function checkUsername( $username , $dbUsername , $con ) {
@@ -289,8 +289,16 @@
                             else if ( $emailSuc != "" ) echo "<div class='valid'>" . $emailSuc . "</div>";
                           ?>
 
-                         <?php echo "Total post number = " . $postNumber . "<br>"; ?>
-                         <?php echo "Total command number = " . $commandNumber . "<br>"; ?>
+                         <?php
+                            echo "Total post number = " . $postNumber . " ";
+                            if ( $postNumber > 0 ) echo '<a href="view.php?id=' . $userid . '&which=post">view post</a><br>';
+                            else echo "<br>"
+                          ?>
+                         <?php
+                            echo "Total comment number = " . $commentNumber . " ";
+                            if ( $commentNumber > 0 ) echo '<a href="view.php?id=' . $userid . '&which=comment">view comment</a><br>';
+                            else echo "<br>";
+                          ?>
 
                          <h3>Change Password</h3>
                          <hr>
@@ -318,7 +326,7 @@
 
                          <div class="deleteAccountWarning">
                              <i class="fa fa-exclamation-triangle">This is extremely important.</i><br><br>
-                             We will <b>immediately delete all of your post and command message</b><br><br>
+                             We will <b>immediately delete all of your post and comment message</b><br><br>
                              You will no longer be billed , and your username will be available to anyone on Message Board.<br>
                          </div>
                          <br>
