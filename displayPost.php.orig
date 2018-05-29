@@ -18,11 +18,10 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <title><?php echo $_GET["title"]; ?></title>
-
     </head>
 
     <body>
-        <body style="background-color: #f9f9f9;">
+       <body style="background-color: #f9f9f9;">
         <?php include "statusColumn.php"; ?>
 
         <?php
@@ -53,21 +52,38 @@
             }
          ?>
 
+<<<<<<< HEAD
+         <div class="displayPost" >
+             <div class="row">  
+                                            
+                     <div class="col-xs-1" style="background-color:red"> <!-- display post basic information -->
+                         <span class="white_space">Title<br></span>
+                         <span class="white_space">Author<br></span>
+                         <span class="white_space">Time<br></span>
+                     </div>
+                     <div class="col-xs-11" style="background-color:#9494f5">
+                         <?php echo $title; ?><br>
+                         <?php echo $username; ?><br>
+                         <?php echo $time; ?><br>
+                    
+                    </div>
+=======
          <br>
          <div class="displayPost">
              <div class="row">
-                 <div class="col-xs-1" style="background-color: red"> <!-- display post basic information -->
+                 <div class="col-xs-1"> <!-- display post basic information -->
                      <span class="white_space">Title<br></span>
                      <span class="white_space">Author<br></span>
                      <span class="white_space">Time<br></span>
                  </div>
-                 <div class="col-xs-11" style="background-color: #b3a6fa";>
+                 <div class="col-xs-11">
                      <?php echo $title; ?><br>
                      <?php echo $username; ?><br>
                      <?php echo $time; ?><br>
                  </div>
+>>>>>>> 00018d6959fe29b9b93c042e2575dfb0e47d145a
              </div>
-             <hr style="border-width: 3px; border-color: #f9f9f9;">
+             <hr style="border-width: 15px; border-color: #f9f9f9;">
 
              <?php echo $article . "<br><br><br>"; ?> <!-- display post article -->
 
@@ -87,6 +103,11 @@
                         if ( $row["image"] == "" ) $image = "default.jpeg";
                         else $image = $row["image"];
 
+<<<<<<< HEAD
+                        echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "&nbsp&nbsp&nbsp".
+                        '<button type="button" class="btn btn-primary btn-xs">reply</button>'.'<br>';
+                    }
+=======
                         // display post's comment
                         echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "<br>";
 
@@ -109,9 +130,10 @@
                             } // end find comment's comment
                         }
                     } // end find post's comment
+>>>>>>> 00018d6959fe29b9b93c042e2575dfb0e47d145a
                 }
                 else echo "There is no comment yet.<br>";
-
+                
                 include "disconnectToDB.php";
               ?>
          </div>
