@@ -63,6 +63,7 @@
                             // auto log in when signUp success
                             $_SESSION['loggedin'] = true;
                             $_SESSION['user'] = $username;
+                            $_SESSION['image'] = "default.jpeg";
                             header("Location: index.php"); // redirection
                         }
                     }
@@ -142,7 +143,7 @@
                         <br><br><br>
                     </div>
                     <div class="col-xs-6 signUp">
-                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . 'boardid=' . $_GET["boardid"];?>">
+                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                             <span >Username</span><br>
                             <input type="text" name="_username" placeholder="Pick a username" value="<?php echo $username; ?>"><br>
                             <?php if ( $usernameErr != "" ) echo "<div class='invalid'>" . $usernameErr . "</div>"; ?> <!--username need to be unique-->
