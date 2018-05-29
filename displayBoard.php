@@ -38,6 +38,9 @@
                             echo "</span></p>";
                         echo "</div>";
                     }
+                    
+                    echo '<button type="button" class="btn btn-primary btn-xs" style="background-color:white"><img src= "back.png"></button>'."&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp".
+                    '<button type="button" class="btn btn-primary btn-xs" style="background-color:white"><img src= "next.png"></button>';
                 }
                 else echo "There is no post yet!!<br>";
 
@@ -53,13 +56,12 @@
                     $data = mysqli_real_escape_string( $con , $data );
                     return $data;
                 }
-
-                include "disconnectToDB.php";
+                
              ?>
         </div>
         <div class="col-xs-3">
             <br>
-            <button type="button" class="btn btn-default" onclick="location.href='add_artical.php?var1=<?php echo $boardid; ?>'" style="background-color: #ff6060; color: #ffffff;">add new post</button>
+            <button type="button" class="btn btn-default" onclick="location.href='add_artical.php?var1=<?php echo $boardid; ?>'" style="background-color: #66c98c; color: #ffffff;">add post</button>
         </div>
 
     </body>

@@ -88,7 +88,7 @@
                         else $image = $row["image"];
 
                         // display post's comment
-                        echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "<br>";
+                        echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "&nbsp&nbsp&nbsp". '<button type="button" class="btn btn-primary btn-xs" style="background-color:">reply</button>'."<br>";
 
                         // fetch commentid
                         $commentid = $row["commentid"];
@@ -105,7 +105,7 @@
                                 else $image = $row["image"];
 
                                 // display comment's comment
-                                echo "<span class='white_space'>           <img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "<br></span>";
+                                echo "<span class='white_space'>           <img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] ."<br></span>";
                             } // end find comment's comment
                         }
                     } // end find post's comment
