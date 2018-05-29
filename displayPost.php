@@ -52,6 +52,7 @@
             }
          ?>
 
+         <br>
          <div class="displayPost">
              <div class="row">
                  <div class="col-xs-1"> <!-- display post basic information -->
@@ -74,19 +75,39 @@
              <?php
                 include "connectToDB.php";
 
-                $sql = "select a.username , a.image , p.postid , c.date_time , c.text ";
+                $sql = "select a.username , a.image , p.postid , c.date_time , c.text , c.commentid ";
                 $sql .= "from post p , comment c , account a " ;
                 $sql .= "where p.postid = " . $postid . " and p.postid = c.postid and c.userid = a.userid ";
-                $sql .= "order by c.commentid";
+
                 $query = mysqli_query( $con , $sql );
 
-                if ( $query->num_rows > 0 ) { // find comment
+                if ( $query->num_rows > 0 ) { // find post's comment
                     while ( $row = $query->fetch_assoc() ) {
                         if ( $row["image"] == "" ) $image = "default.jpeg";
                         else $image = $row["image"];
 
+                        // display post's comment
                         echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "<br>";
-                    }
+
+                        // fetch commentid
+                        $commentid = $row["commentid"];
+
+                        // query comment's comment
+                        $sql = "select r.date_time , r.text , a.username , a.image ";
+                        $sql .= "from comment as c , reply as r , account as a ";
+                        $sql .= "where c.commentid = " . $commentid . " and c.commentid = r.commentid and a.userid = r.userid";
+
+                        $query2 = mysqli_query( $con , $sql );
+                        if ( $query2->num_rows > 0 ) { // find comment's comment
+                            while ( $row = $query2->fetch_assoc() ) {
+                                if ( $row["image"] == "" ) $image = "default.jpeg";
+                                else $image = $row["image"];
+
+                                // display comment's comment
+                                echo "<span class='white_space'>           <img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "<br></span>";
+                            } // end find comment's comment
+                        }
+                    } // end find post's comment
                 }
                 else echo "There is no comment yet.<br>";
 
