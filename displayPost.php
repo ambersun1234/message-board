@@ -56,12 +56,12 @@
          <br>
          <div class="displayPost">
              <div class="row">
-                 <div class="col-xs-1" style="background-color: red"> <!-- display post basic information -->
+                 <div class="col-xs-1" style="background-color: #ffd460"> <!-- display post basic information -->
                      <span class="white_space">Title<br></span>
                      <span class="white_space">Author<br></span>
                      <span class="white_space">Time<br></span>
                  </div>
-                 <div class="col-xs-11" style="background-color: #b3a6fa";>
+                 <div class="col-xs-11" style="background-color: #ffe99e";>
                      <?php echo $title; ?><br>
                      <?php echo $username; ?><br>
                      <?php echo $time; ?><br>
@@ -71,7 +71,7 @@
 
              <?php echo $article . "<br><br><br>"; ?> <!-- display post article -->
 
-             <hr style="border-width: 4px; border-color: #ff6060;">
+             <hr style="border-width: 4px; border-color: #ffce94;">
 
              <?php
                 include "connectToDB.php";
@@ -81,14 +81,14 @@
                 $sql .= "where p.postid = " . $postid . " and p.postid = c.postid and c.userid = a.userid ";
 
                 $query = mysqli_query( $con , $sql );
-
+                
                 if ( $query->num_rows > 0 ) { // find post's comment
                     while ( $row = $query->fetch_assoc() ) {
                         if ( $row["image"] == "" ) $image = "default.jpeg";
                         else $image = $row["image"];
 
                         // display post's comment
-                        echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "<br>";
+                        echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "&nbsp&nbsp&nbsp". '<button type="button" class="btn btn-primary btn-xs" style="position:relative;bottom:4px; background-color:#f9f9f9"><img src="reply.png"></button>'."<br>";
 
                         // fetch commentid
                         $commentid = $row["commentid"];
@@ -105,15 +105,19 @@
                                 else $image = $row["image"];
 
                                 // display comment's comment
-                                echo "<span class='white_space'>           <img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "<br></span>";
+                                echo "<span class='white_space'>           <img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] ."<br></span>";
                             } // end find comment's comment
+                            
                         }
+                        echo '<hr style="border-width: 1px; border-color: #3e3831;">';
                     } // end find post's comment
                 }
                 else echo "There is no comment yet.<br>";
-
+                
+                
                 include "disconnectToDB.php";
               ?>
+              
          </div>
     </body>
 </html>
