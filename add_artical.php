@@ -19,10 +19,10 @@
 
     <body  style="background-color: #f9f9f9;">
         <?php
-            $location = "Location: displayBoard.php?boardid=" . $_GET["var1"];
+            $location = "Location: displayBoard.php?boardid=" . $_GET["boardid"];
 
             if ( $_SESSION["loggedin"] == false ) {
-                $location = "Location: displayBoard.php?boardid=" . $_GET["var1"];
+                $location = "Location: displayBoard.php?boardid=" . $_GET["boardid"];
                 header( $location );
             }
          ?>
@@ -53,7 +53,7 @@
                         $query = mysqli_query( $con , $sql );
 
                         if ( !$query ) $postErr = "Something went wrong , please try again...<br>";
-                        else header("Location: " . $boardid . ".php");
+                        else header("Location: /displayBoard.php?boardid=" . $boardid);
                     }
                 }
 
@@ -90,7 +90,7 @@
             }
             function checkTitle( $title ) {
                 if ( $title == "" ) $GLOBALS["titleErr"] = "Title can not be blank!!<br>";
-                else if ( strlen( $title ) > 30 ) $GLOBALS["titleErr"] = "Title words can not exceed 30 words!!<br>";
+                else if ( strlen( $title ) > 50 ) $GLOBALS["titleErr"] = "Title words can not exceed 50 words!!<br>";
                 else $GLOBALS["titleErr"] = "";
             }
             function checkArticle( $article ) {
@@ -107,7 +107,7 @@
         <?php include "statusColumn.php"; ?>
 
         <div class="add_artical">
-            <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] ) . '?var1=' . $_GET['var1'];?>">
+            <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] ) . '?boardid=' . $_GET['boardid'];?>">
                 <br>title:<br>
                 <!-- note: textarea does not have value attribute , so php echo should write in the middle of textarea -->
                 <textarea name="_title" rows="1" cols="1" maxlength="30"><?php echo $title; ?></textarea><br>
@@ -119,8 +119,8 @@
                 <textarea name="_artical" rows="15"><?php echo $article;?></textarea><br>
                 <?php echo "<div class='invalid'>" . $articleErr . "</div>"; ?>
 
-                <!-- pass var1 to php after submit form -->
-                <input type="hidden" name="_boardid" value="<?php echo $_GET['var1'];?>">
+                <!-- pass boardid to php after submit form -->
+                <input type="hidden" name="_boardid" value="<?php echo $_GET['boardid'];?>">
 
                 <br>
                 <button type="submit" name="SUBMIT" class="btn btn-default" style="background-color: #ff6060; color: #ffffff;">Submit</button>
