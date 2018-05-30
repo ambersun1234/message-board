@@ -150,9 +150,7 @@
                 $row = $query->fetch_assoc();
                 $GLOBALS["postNumber"] = $row["total"];
                 //---------------------------------------------------------------------------------
-                $sql = "select ( select count(*) from comment as c where c.userid = " . $GLOBALS["userid"] . " ) + ";
-                $sql .= "( select count(*) from reply as r where r.userid = " . $GLOBALS["userid"] . " ) ";
-                $sql .= "as total";
+                $sql = "select count(*) as total from comment as c where c.userid = " . $GLOBALS["userid"];
 
                 $query = mysqli_query( $con , $sql );
                 $row = $query->fetch_assoc();
@@ -291,12 +289,12 @@
 
                          <?php
                             echo "Total post number = " . $postNumber . " ";
-                            if ( $postNumber > 0 ) echo '<a href="view.php?id=' . $userid . '&which=post">view post</a><br>';
-                            else echo "<br>"
+                            if ( $postNumber > 0 ) echo '<a href="view.php?id=' . $userid . '&which=post&sort=apt">view post</a><br>';
+                           else echo "<br>";
                           ?>
                          <?php
                             echo "Total comment number = " . $commentNumber . " ";
-                            if ( $commentNumber > 0 ) echo '<a href="view.php?id=' . $userid . '&which=comment">view comment</a><br>';
+                            if ( $commentNumber > 0 ) echo '<a href="view.php?id=' . $userid . '&which=comment&sort=apt">view comment</a><br>';
                             else echo "<br>";
                           ?>
 

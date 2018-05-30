@@ -15,9 +15,24 @@
         <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
         <link rel="stylesheet" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- show text from drop down using jquery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <title><?php echo $_GET["title"]; ?></title>
+
+        <script>
+            $(function(){
+                $( '#selectedMenu' ).on( 'change' , function() {
+                    var url = $(this).val(); // get selected value
+                    if ( url ) {
+                        window.location = url;
+                    }
+                    else return false;
+                });
+            });
+        </script>
+
+        <title><?php echo $_GET["which"]; ?></title>
 
     </head>
 
@@ -35,13 +50,62 @@
                 $id = getData( $con , $_GET["id"] );
                 if ( !checkUserMatch( $id , $con ) ) echo "check failed.<br>"; //header("Location: index.php");
                 $which = getData( $con , $_GET["which"] );
+                $sort = getData( $con , $_GET["sort"] );
 
-                echo "Here's your total " . $which . " in message-board.<br><br>";
+                echo "sort by <span style='color: #ff6060;'>";
+                switch ( $sort ) {
+                    case 'apt':
+                        echo "Article post time<br>";
+                        break;
 
-                if ( $which == "post" ) $sql = "select a.username , postid , title , date_time as time , boardid from post p , account a where p.userid = " . $id . " and p.userid = a.userid";
+                    case 'at':
+                        echo "Article title<br>";
+                        break;
+
+                    case 'b':
+                        echo "Board<br>";
+                        break;
+
+                    case 'ap':
+                        echo "Article publisher<br>";
+                        break;
+                }
+
+                echo "</span>or choose sort option: ";
+
+                echo "<select class='form-control' id='selectedMenu' style='width: 14%; margin: 0px;'>"; // javascript stuff
+                        echo "<option selected='selected'>Choose...</option>";
+                        echo "<option value='/view.php?id=" . $id . "&which=" . $which . "&sort=ap" . "'>Article publisher</option>";
+                        echo "<option value='/view.php?id=" . $id . "&which=" . $which . "&sort=b" . "'>Board</option>";
+                        echo "<option value='/view.php?id=" . $id . "&which=" . $which . "&sort=at" . "'>Article title</option>";
+                        echo "<option value='/view.php?id=" . $id . "&which=" . $which . "&sort=apt" . "'>Article post time</option>";
+                echo "</select>";
+
+                if ( $which == "post" ) $sql = "select a.username , p.postid , p.title , p.date_time as time , p.boardid from post p , account a where p.userid = " . $id . " and p.userid = a.userid";
                 else {
                     $sql = "select c.text , c.date_time as time , c.postid , p.title , p.boardid , a.username from comment c , post p , account a ";
                     $sql .= "where c.postid = p.postid and c.userid = " . $id . " and p.userid = a.userid";
+                }
+
+                if ( checkSort( $sort ) ) { // if sort has assigned , add sql select condition
+                    $sql .= " order by ";
+                    switch ( $sort ) {
+                        case "ap":
+                            $sql .= "a.username desc";
+                            break;
+
+                        case "b":
+                            $sql .= "p.boardid desc";
+                            break;
+
+                        case "at":
+                            $sql .= "p.title desc";
+                            break;
+
+                        case "apt":
+                            $sql .= "time desc";
+                            break;
+                    }
                 }
 
                 $query = mysqli_query( $con , $sql );
@@ -68,6 +132,10 @@
                     $data = htmlspecialchars( $data ); // turn &"'<> to real entity
                     $data = mysqli_real_escape_string( $con , $data );
                     return $data;
+                }
+                function checkSort( $sort ) {
+                    if ( $sort == "ap" || $sort == "b" || $sort == "at" || $sort == "apt" ) return true;
+                    else return false;
                 }
                 function checkUserMatch( $id , $con ) {
                     $sql = "select username from account where userid = " . $id . " and username = '" . $_SESSION["user"] . "'";
