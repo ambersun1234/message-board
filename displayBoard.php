@@ -58,7 +58,9 @@
         </div>
         <div class="col-xs-3">
             <br>
-            <button type="button" class="btn btn-default" onclick="location.href='add_artical.php?var1=<?php echo $boardid; ?>'" style="background-color: #ff7474; color: black; font-size:15px; position:relative; top:10px;">New post<img src="edit.png"></button>
+
+            <button type="button" class="btn btn-default" onclick="location.href='add_artical.php?var1=<?php echo $boardid; ?>'" style="background-color: #ff7474; color: black; font-size:20px; position:relative; top:10px;">New post <img src="edit.png"></button>
+
         </div>
 
     </body>

@@ -8,6 +8,13 @@ ul.nav,.jumbotron h1 {
 ul.nav {
   font-size: 13px;
 }
+.comment{
+    height: 40px;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
 footer {
   background-color: #ff6060;
   padding-top: 50px;

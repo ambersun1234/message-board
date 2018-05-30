@@ -18,11 +18,16 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <title><?php echo $_GET["title"]; ?></title>
-
+        
     </head>
 
     <body>
         <body style="background-color: #f9f9f9;">
+        <script>
+            function showDiv() {
+            document.getElementById('welcomeDiv').style.display = "block";
+            }
+            </script>
         <?php include "statusColumn.php"; ?>
 
         <?php
@@ -88,7 +93,8 @@
                         else $image = $row["image"];
 
                         // display post's comment
-                        echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "&nbsp&nbsp&nbsp". '<button type="button" class="btn btn-primary btn-xs" style="position:relative;bottom:4px; background-color:#f9f9f9"><img src="reply.png"></button>'."<br>";
+                        echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "&nbsp&nbsp&nbsp". 
+                        '<button type="button" name="reply" class="btn btn-primary btn-xs" id="but" style="position:relative;bottom:4px; background-color:#f9f9f9"><img src="reply.png"></button>'."<br>";
 
                         // fetch commentid
                         $commentid = $row["commentid"];
@@ -112,12 +118,19 @@
                         echo '<hr style="border-width: 1px; border-color: #3e3831;">';
                     } // end find post's comment
                 }
-                else echo "There is no comment yet.<br>";
-                
-                
+               
+             
                 include "disconnectToDB.php";
               ?>
-              
+               <?php
+                include "connectToDB.php";
+                 if ( isset( $_SESSION['loggedin'] ) && $_SESSION['loggedin'] == true ) {
+                     echo 
+                        '<div class="comment">
+                            <textarea style="background-color:#FFF0D4; name="comment" cols="95" rows="1">enter your comment</textarea>
+                        </div>';
+                 }
+                ?>   
          </div>
     </body>
 </html>
