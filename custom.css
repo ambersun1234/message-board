@@ -10,9 +10,6 @@ ul.nav {
 }
 .comment{
     height: 40px;
-    box-sizing: border-box;
-    position: absolute;
-    bottom: 0;
     width: 100%;
 }
 footer {

@@ -18,16 +18,16 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <title><?php echo $_GET["title"]; ?></title>
-        
+
     </head>
 
     <body>
         <body style="background-color: #f9f9f9;">
         <script>
             function showDiv() {
-            document.getElementById('welcomeDiv').style.display = "block";
+                document.getElementById('welcomeDiv').style.display = "block";
             }
-            </script>
+        </script>
         <?php include "statusColumn.php"; ?>
 
         <?php
@@ -36,7 +36,7 @@
             $title = $username = $time = $postid = $article = $userid = "";
 
             $title = $_GET["title"];
-            $postid = getData( $con , $_GET["var1"] );
+            $postid = getData( $con , $_GET["postid"] );
 
             $sql = "select a.username , a.userid , p.date_time , p.article from account as a , post as p where p.postid = " . $postid . " and p.userid = a.userid";
             $query = mysqli_query( $con , $sql );
@@ -57,6 +57,37 @@
                 return $data;
             }
          ?>
+
+         <?php // comment part
+            if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["submit_comment"] ) ) { // active when submit
+                include "connectToDB.php";
+
+                $userid = getUserid( $con , $_SESSION["user"] );
+                $commentid = getCommentid( $con );
+                $text = getData( $con , $_POST["_comment"] );
+                $postid = getData( $con , $_GET["postid"] );
+
+                $sql = "insert into comment( userid , postid , commentid , text ) ";
+                $sql .= "value( " . $userid . " , " . $postid . " , " . $commentid . " , " . $text . " )";
+
+                $query = mysqli_query( $con , $sql );
+                if ( !$query ); // commentErr = please try again
+
+                include "disconnectToDB.php";
+            }
+            function getCommentid( $con ) {
+                $sql = "select max( commentid ) from comment";
+                $query = mysqli_query( $con , $sql );
+                $row = $query->fetch_assoc();
+                return $row["commentid"] + 1;
+            }
+            function getUserid( $con , $name ) {
+                $sql = "select userid from account where username = '" . $name . "'";
+                $query = mysqli_query( $con , $sql );
+                $row = $query->fetch_assoc();
+                return $row["userid"];
+            }
+          ?>
 
          <br>
          <div class="displayPost">
@@ -86,15 +117,14 @@
                 $sql .= "where p.postid = " . $postid . " and p.postid = c.postid and c.userid = a.userid ";
 
                 $query = mysqli_query( $con , $sql );
-                
+
                 if ( $query->num_rows > 0 ) { // find post's comment
                     while ( $row = $query->fetch_assoc() ) {
                         if ( $row["image"] == "" ) $image = "default.jpeg";
                         else $image = $row["image"];
 
                         // display post's comment
-                        echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "&nbsp&nbsp&nbsp". 
-                        '<button type="button" name="reply" class="btn btn-primary btn-xs" id="but" style="position:relative;bottom:4px; background-color:#f9f9f9"><img src="reply.png"></button>'."<br>";
+                        echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "&nbsp&nbsp&nbsp". '<button type="button" class="btn btn-primary btn-xs" style="position:relative;bottom:4px; background-color:#f9f9f9"><img src="reply.png"></button>'."<br>";
 
                         // fetch commentid
                         $commentid = $row["commentid"];
@@ -111,26 +141,28 @@
                                 else $image = $row["image"];
 
                                 // display comment's comment
-                                echo "<span class='white_space'>           <img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] ."<br></span>";
+                                echo "<span class='white_space'>";
+                                echo "        ";
+                                echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] ."<br></span>";
                             } // end find comment's comment
-                            
+
                         }
                         echo '<hr style="border-width: 1px; border-color: #3e3831;">';
                     } // end find post's comment
                 }
-               
-             
                 include "disconnectToDB.php";
-              ?>
-               <?php
-                include "connectToDB.php";
+             ?>
+            <?php
+                 include "connectToDB.php";
                  if ( isset( $_SESSION['loggedin'] ) && $_SESSION['loggedin'] == true ) {
-                     echo 
-                        '<div class="comment">
-                            <textarea style="background-color:#FFF0D4; name="comment" cols="95" rows="1">enter your comment</textarea>
-                        </div>';
+                     echo '<div class="comment">';
+                        echo '<textarea style="background-color: #FFF0D4;width: 100%;padding: 5px;" name="_comment" rows="1" placeholder="enter your comment"></textarea>';
+                     echo '</div>';
                  }
-                ?>   
+                 else echo "There is no comment yet.<br>";
+                 include "disconnectToDB.php";
+             ?>
+
          </div>
     </body>
 </html>
