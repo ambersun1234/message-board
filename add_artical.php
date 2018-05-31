@@ -47,6 +47,8 @@
                     $postid = findPostid( $con );
 
                     if ( checkBoard( $boardid ) != false && $postErr == "" ) {
+                        $article = str_replace( '&#13;' , '<br>' , $article );
+
                         $sql = "insert into post( userid , postid , title , article , boardid )";
                         $sql .= " value( " . $id . " , " . $postid . " , '" . $title . "' , '" . $article . "' , '" . $boardid . "' )";
 
@@ -85,12 +87,12 @@
                 $data = stripslashes( $data ); // remove all \
                 $data = htmlspecialchars( $data ); // turn &"'<> to real entity
                 $data = mysqli_real_escape_string( $con , $data );
-                $data = str_replace( '\r\n' , '<br>' , $data ); // replace new line
+                $data = str_replace( '\r' , '' , $data ); // replace new line
+                $data = str_replace( '\n' , '&#13;' , $data ); // replace new line
                 return $data;
             }
             function checkTitle( $title ) {
                 if ( $title == "" ) $GLOBALS["titleErr"] = "Title can not be blank!!<br>";
-                else if ( strlen( $title ) > 50 ) $GLOBALS["titleErr"] = "Title words can not exceed 50 words!!<br>";
                 else $GLOBALS["titleErr"] = "";
             }
             function checkArticle( $article ) {
@@ -110,7 +112,7 @@
             <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] ) . '?boardid=' . $_GET['boardid'];?>">
                 <br>title:<br>
                 <!-- note: textarea does not have value attribute , so php echo should write in the middle of textarea -->
-                <textarea name="_title" rows="1" cols="1" maxlength="30"><?php echo $title; ?></textarea><br>
+                <textarea name="_title" rows="1" cols="1" maxlength="1024"><?php echo $title; ?></textarea><br>
                 <?php echo "<div class='invalid'>" . $titleErr . "</div>"; ?>
 
                 <br>
