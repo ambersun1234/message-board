@@ -111,7 +111,6 @@
             $username = $email = $oldPassword = $newPassword = $cnewPassword = $imageFilePath = "";
             $usernameErr = $emailErr = $oldPasswordErr = $newPasswordErr = $cnewPasswordErr = $fileErr = "";
             $usernameSuc = $emailSuc = $passwordSuc = $fileSuc = "";
-            $usernameFail = $emailFail = $passwordFail = "";
             $postNumber = $commentNumber = 0;
 
             include "connectToDB.php";
@@ -126,10 +125,19 @@
                     // enter this block when file is uploaded
                     uploadImage( $con );
                 }
-                getData( $con );
+                if ( checkValid() ) header("Location: /accountCenter.php");
             }
             include "disconnectToDB.php";
 
+            function checkValid() {
+                if ( $GLOBALS["usernameErr"] == "" &&
+                     $GLOBALS["emailErr"] == "" &&
+                     $GLOBALS["oldPasswordErr"] == "" &&
+                     $GLOBALS["newPasswordErr"] == "" &&
+                     $GLOBALS["cnewPasswordErr"] == "" &&
+                     $GLOBALS["fileErr"] == "" ) return true;
+                else return false;
+            }
             function getData( $con ) {
                 $sql = "select * from account where username = '" . $_SESSION['user'] . "'";
                 $query = mysqli_query( $con , $sql );
@@ -168,7 +176,6 @@
                 else { // update database
                     $sql = "update account set username = '" . $username . "' where userid = '" . $GLOBALS["userid"] . "'";
                     $query = mysqli_query( $con , $sql );
-                    unset( $_SESSION['user'] ); // delete previous session
                     $_SESSION['user'] = $username; // add new session
                     if ( $query ) $GLOBALS["usernameSuc"] = "Update successfully!!<br>";
                     else $GLOBALS["usernameFail"] = "Update failed , please try again.<br>";
