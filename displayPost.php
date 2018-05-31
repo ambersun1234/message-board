@@ -53,23 +53,26 @@
                 $data = stripslashes( $data ); // remove all \
                 $data = htmlspecialchars( $data ); // turn &"'<> to real entity
                 $data = mysqli_real_escape_string( $con , $data );
-                $data = str_replace( '\r\n' , '<br>' , $data ); // replace new line
+                $data = str_replace( '\r' , '' , $data ); // replace new line
+                $data = str_replace( '\n' , '&#13;' , $data ); // replace new line
                 return $data;
             }
          ?>
 
          <?php // comment part
-            $commentErr = "";
+            $comment = $commentErr = "";
 
             if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["submit_comment"] ) ) { // active when submit
                 include "connectToDB.php";
 
                 $userid = getUserid( $con , $_SESSION["user"] );
                 $commentid = getCommentid( $con );
-                $text = getData( $con , $_POST["_comment"] );
+                $comment = getData( $con , $_POST["_comment"] );
+
+                $comment = str_replace( '&#13;' , '<br>' , $comment );
 
                 $sql = "insert into comment( userid , postid , commentid , text ) ";
-                $sql .= "value( " . $userid . " , " . $postid . " , " . $commentid . " , " . $text . " )";
+                $sql .= "value( " . $userid . " , " . $postid . " , " . $commentid . " , '" . $comment . "' )";
 
                 $query = mysqli_query( $con , $sql );
                 if ( !$query ) $commentErr = "comment failed , please try again...<br>"; // insert failed
@@ -78,7 +81,7 @@
                 include "disconnectToDB.php";
             }
             function getCommentid( $con ) {
-                $sql = "select max( commentid ) from comment";
+                $sql = "select max( commentid ) as commentid from comment";
                 $query = mysqli_query( $con , $sql );
                 $row = $query->fetch_assoc();
                 return $row["commentid"] + 1;
@@ -161,8 +164,11 @@
                             echo '<img style="vertical-align: baseline;" src="/images/' . $_SESSION["image"] . '"height="45" weight="35">';
                         echo '</div>';
                         echo '<div class="col-xs-11" style="padding: 0px;">';
-                            echo '<textarea style="background-color: #FFF0D4;width: 100%;padding: 5px;" name="_comment" rows="3" placeholder="enter your comment"></textarea>';
-                            if ( $commentErr != "" ) echo '<div class="invalid">' . $commentErr . '</div>'; // show error when comment failed
+                            echo '<form method="post" action="' . htmlspecialchars( $_SERVER["PHP_SELF"] ) . '?postid=' . $postid . '&title=' . $title . '">';
+                                echo '<textarea style="background-color: #FFF0D4;width: 100%;padding: 5px;" name="_comment" rows="3" placeholder="enter your comment">' . $comment . '</textarea>';
+                                if ( $commentErr != "" ) echo '<div class="invalid">' . $commentErr . '</div>'; // show error when comment failed
+                                echo '<button type="submit" name="submit_comment" class="btn btn-default" style="background-color: #ff6060; color: #ffffff;">Add comment</button>';
+                            echo '</form>';
                         echo '</div>';
                     echo '</div>';
                 }
