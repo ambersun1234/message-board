@@ -230,7 +230,10 @@
                     if ( move_uploaded_file( $_FILES["fileToUpload"]["tmp_name"] , $targetFile ) ) { // move image to images/ directory
                         $sql = "update account set image = '" . $imagePath . "' where userid = '" . $GLOBALS["userid"] . "'";
                         $query = mysqli_query( $con , $sql );
-                        if ( $query ) $GLOBALS["fileSuc"] = "Update successfully!!<br>";
+                        if ( $query ) {
+                            $_SESSION["image"] = $imagePath;
+                            $GLOBALS["fileSuc"] = "Update successfully!!<br>";
+                        }
                         else $GLOBALS["fileErr"] = "Update failed , please try again.<br>";
                     }
                     else {
