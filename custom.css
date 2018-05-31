@@ -8,10 +8,6 @@ ul.nav,.jumbotron h1 {
 ul.nav {
   font-size: 13px;
 }
-.comment{
-    height: 40px;
-    width: 100%;
-}
 footer {
   background-color: #ff6060;
   padding-top: 50px;
@@ -22,6 +18,9 @@ footer {
 }
 #onemillion{
   background-color: #ff5511;
+}
+.row {
+    margin: 0px;
 }
 .white_space {
     white-space: pre;

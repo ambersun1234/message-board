@@ -125,6 +125,7 @@
                     // enter this block when file is uploaded
                     uploadImage( $con );
                 }
+                getData( $con );
                 if ( checkValid() ) header("Location: /accountCenter.php");
             }
             include "disconnectToDB.php";

@@ -90,7 +90,6 @@
                 return $row["userid"];
             }
           ?>
-
          <br>
          <div class="displayPost">
              <div class="row">
@@ -126,7 +125,7 @@
                         else $image = $row["image"];
 
                         // display post's comment
-                        echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] . "&nbsp&nbsp&nbsp". '<button type="button" class="btn btn-primary btn-xs" style="position:relative;bottom:4px; background-color:#f9f9f9"><img src="/images/reply.png"></button>'."<br>";
+                        echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . "<span style='float: right'> " . $row["date_time"] . "&nbsp&nbsp&nbsp". '<button type="button" class="btn btn-primary btn-xs" style="position:relative;bottom:4px; background-color:#f9f9f9"><img src="/images/reply.png"></button>'."</span><br>";
 
                         // fetch commentid
                         $commentid = $row["commentid"];
@@ -145,25 +144,29 @@
                                 // display comment's comment
                                 echo "<span class='white_space'>";
                                 echo "        ";
-                                echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . " -- " . $row["date_time"] ."<br></span>";
+                                echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . "<span style='float: right;'>" . $row["date_time"] ."        </span><br></span>";
                             } // end find comment's comment
 
                         }
-                        echo '<hr style="border-width: 1px; border-color: #3e3831;">';
+                        echo '<hr style="border-width: 2px; border-color: #3e3831;">';
                     } // end find post's comment
                 }
                 include "disconnectToDB.php";
              ?>
             <?php
-                 include "connectToDB.php";
-                 if ( isset( $_SESSION['loggedin'] ) && $_SESSION['loggedin'] == true ) {
-                     echo '<div class="comment">';
-                        echo '<textarea style="background-color: #FFF0D4;width: 100%;padding: 5px;" name="_comment" rows="1" placeholder="enter your comment"></textarea>';
-                        if ( $commentErr != "" ) echo '<div class="invalid">' . $commentErr . '</div>'; // show error when comment failed
-                     echo '</div>';
-                 }
-                 else echo "There is no comment yet.<br>";
-                 include "disconnectToDB.php";
+                include "connectToDB.php";
+                if ( isset( $_SESSION['loggedin'] ) && $_SESSION['loggedin'] == true ) {
+                    echo '<div class="row">';
+                        echo '<div class="col-xs-1" style="padding: 0px;">';
+                            echo '<img style="vertical-align: baseline;" src="/images/' . $_SESSION["image"] . '"height="45" weight="35">';
+                        echo '</div>';
+                        echo '<div class="col-xs-11" style="padding: 0px;">';
+                            echo '<textarea style="background-color: #FFF0D4;width: 100%;padding: 5px;" name="_comment" rows="3" placeholder="enter your comment"></textarea>';
+                            if ( $commentErr != "" ) echo '<div class="invalid">' . $commentErr . '</div>'; // show error when comment failed
+                        echo '</div>';
+                    echo '</div>';
+                }
+                include "disconnectToDB.php";
              ?>
 
          </div>
