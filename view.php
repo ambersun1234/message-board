@@ -30,6 +30,9 @@
                     else return false;
                 });
             });
+            function redirect( url ) {
+                window.location.href = url;
+            }
         </script>
 
         <title><?php echo $_GET["which"]; ?></title>
@@ -107,20 +110,46 @@
                             break;
                     }
                 }
-
+             ?>
+            <?php
                 $query = mysqli_query( $con , $sql );
                 if ( $query ) { // query success
                     if ( $query->num_rows > 0 ) {
                         while ( $row = $query->fetch_assoc() ) {
-                            echo "<div class='postview'>";
-                                echo '<a href="/displayPost.php?postid=' . $row['postid'] . '&title=' . $row['title'] . '">' . $row['title'] . '</a> ( ' . $row["boardid"] . ' )<br>';
+             ?>
+                            <div class='postview'>
+                                <p style="text-align: left;"><a href="/displayPost.php?postid=<?php echo $row['postid'] . '&title=' . $row['title']; ?>"><?php echo $row["title"]; ?></a>( <?php echo $row["boardid"]; ?> )
 
-                                echo "<p style='text-align: left;'>"; // same line but left
-                                    echo $row["username"];
-                                echo "<span style='float: right;'>"; // same line but right
-                                    echo $row["time"];
-                                echo "</span></p>";
-                            echo "</div>";
+                                <!-- start pop out -->
+                                <button style="float: right;" type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Delete post</button><br></p>
+
+                                <div class="modal fade" id="myModal" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Do you want to delete this post?</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Once you delete this post , there is no going back.</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger"  onclick="redirect( '/delete.php?postid=<?php echo $row["postid"]; ?>&which=<?php echo $which; ?>' )">Delete</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- end pop out -->
+
+                                <p style='text-align: left;'><!--  same line but left -->
+                                    <?php echo $row["username"]; ?>
+                                <span style='float: right;'><!-- same line but right -->
+                                    <?php echo $row["time"]; ?>
+                                </span></p>
+                            </div>
+            <?php
                         }
                     }
                     else echo "You haven't " . $which . " anything!!<br>";
