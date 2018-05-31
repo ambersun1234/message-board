@@ -113,7 +113,7 @@
                     if ( $query->num_rows > 0 ) {
                         while ( $row = $query->fetch_assoc() ) {
                             echo "<div class='postview'>";
-                                echo '<a href="/displayPost.php?var1=' . $row['postid'] . '&title=' . $row['title'] . '">' . $row['title'] . '</a> ( ' . $row["boardid"] . ' )<br>';
+                                echo '<a href="/displayPost.php?postid=' . $row['postid'] . '&title=' . $row['title'] . '">' . $row['title'] . '</a> ( ' . $row["boardid"] . ' )<br>';
 
                                 echo "<p style='text-align: left;'>"; // same line but left
                                     echo $row["username"];

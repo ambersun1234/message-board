@@ -35,7 +35,7 @@
 
             $title = $username = $time = $postid = $article = $userid = "";
 
-            $title = $_GET["title"];
+            $title = getData( $con , $_GET["title"] );
             $postid = getData( $con , $_GET["postid"] );
 
             $sql = "select a.username , a.userid , p.date_time , p.article from account as a , post as p where p.postid = " . $postid . " and p.userid = a.userid";
@@ -59,19 +59,21 @@
          ?>
 
          <?php // comment part
+            $commentErr = "";
+
             if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["submit_comment"] ) ) { // active when submit
                 include "connectToDB.php";
 
                 $userid = getUserid( $con , $_SESSION["user"] );
                 $commentid = getCommentid( $con );
                 $text = getData( $con , $_POST["_comment"] );
-                $postid = getData( $con , $_GET["postid"] );
 
                 $sql = "insert into comment( userid , postid , commentid , text ) ";
                 $sql .= "value( " . $userid . " , " . $postid . " , " . $commentid . " , " . $text . " )";
 
                 $query = mysqli_query( $con , $sql );
-                if ( !$query ); // commentErr = please try again
+                if ( !$query ) $commentErr = "comment failed , please try again...<br>"; // insert failed
+                else header("Location: /displayPost.php?postid=" . $postid . "&title=" . $title );
 
                 include "disconnectToDB.php";
             }
@@ -157,6 +159,7 @@
                  if ( isset( $_SESSION['loggedin'] ) && $_SESSION['loggedin'] == true ) {
                      echo '<div class="comment">';
                         echo '<textarea style="background-color: #FFF0D4;width: 100%;padding: 5px;" name="_comment" rows="1" placeholder="enter your comment"></textarea>';
+                        if ( $commentErr != "" ) echo '<div class="invalid">' . $commentErr . '</div>'; // show error when comment failed
                      echo '</div>';
                  }
                  else echo "There is no comment yet.<br>";
