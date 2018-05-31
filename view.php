@@ -135,7 +135,7 @@
                                                 <p>Once you delete this post , there is no going back.</p>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger"  onclick="redirect( '/delete.php?postid=<?php echo $row["postid"]; ?>&which=<?php echo $which; ?>' )">Delete</button>
+                                                <button type="button" class="btn btn-danger"  onclick="redirect( '/delete.php?postid=<?php echo $row["postid"]; ?>&id=<?php echo $id; ?>' )">Delete</button>
                                             </div>
                                         </div>
 
