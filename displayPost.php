@@ -107,6 +107,22 @@
                 return $row["userid"];
             }
           ?>
+
+          <?php // reply
+                $reply = $replyErr = "";
+
+                if ( $_SERVER["REQUEST_METHOD"] == "POST" && isset( $_POST["submit_reply"] ) ) {
+                    include "connectToDB.php";
+
+                    $userid = getUserid( $con , $_SESSION["user"] );
+                    $reply = getData( $con , $_POST["_reply"] );
+
+                    // get data prefectly
+
+                    include "disconnectToDB.php";
+                }
+           ?>
+
          <br>
          <div class="displayPost">
              <div class="row">
@@ -147,13 +163,8 @@
                         // display post's comment
                         echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . "<span style='float: right'> " . $row["date_time"] . "&nbsp&nbsp&nbsp";
              ?>
-                        <button type="button" class="btn btn-primary btn-xs commentButton" onclick="hideShow( <?php echo $count; ?> )"><img src="/images/reply.png"></button></span><br>
+                        <button type="button" class="btn btn-primary btn-md commentButton" onclick="hideShow( <?php echo $count; ?> )"><img src="/images/reply.png"></button></span><br>
             <?php
-                        // reply's input text field
-                        echo "<div style='display: none;' id='lalaland" . $count . "'>";
-                            echo "This is my lalaland<br>";
-                        echo "</div>";
-
                         // fetch commentid
                         $commentid = $row["commentid"];
 
@@ -175,6 +186,23 @@
                             } // end find comment's comment
 
                         }
+             ?>
+                        <!-- reply's input text field -->
+                        <div style="display: none;" id="lalaland<?php echo $count; ?>" class="rows">
+                            <div class="row">
+                                <div class="col-xs-1">
+                                    <img style="float: right;" src="/images/<?php echo $_SESSION["image"]; ?>" alt="Profile picture" height="30" width="30">
+                                </div>
+                                <div class="col-xs-11" style="padding: 0px;">
+                                    <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] ) . '?postid=' . $postid . '&title=' . $titl; ?>">
+                                        <textarea style="background-color: #FFF0D4;width: 100%;padding: 5px;" name="_reply" rows="3" placeholder="enter your reply"><?php echo $reply; ?></textarea>
+                                        <?php if ( $commentErr != "" ) echo '<div class="invalid">' . $commentErr . '</div>'; // show error when comment failed ?>
+                                        <button type="submit" name="submit_reply" class="btn btn-default" style="background-color: #ff6060; color: #ffffff;">Add reply</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+            <?php
                         echo '<hr style="border-width: 3px; border-color: #3e3831;">';
                     } // end find post's comment
                 }
