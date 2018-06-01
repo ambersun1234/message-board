@@ -17,6 +17,20 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <script>
+            function hideShow( id ) {
+                var x = document.getElementById("lalaland" + id );
+
+                if ( x.style.display === "none" ) {
+                    x.style.display = "block";
+                }
+                else {
+                    x.style.display = "none";
+                }
+            }
+        </script>
+
         <title><?php echo $_GET["title"]; ?></title>
 
     </head>
@@ -121,14 +135,24 @@
                 $sql .= "where p.postid = " . $postid . " and p.postid = c.postid and c.userid = a.userid ";
 
                 $query = mysqli_query( $con , $sql );
+                $count = 0;
 
                 if ( $query->num_rows > 0 ) { // find post's comment
                     while ( $row = $query->fetch_assoc() ) {
+                        $count++;
+
                         if ( $row["image"] == "" ) $image = "default.jpeg";
                         else $image = $row["image"];
 
                         // display post's comment
-                        echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . "<span style='float: right'> " . $row["date_time"] . "&nbsp&nbsp&nbsp". '<button type="button" class="btn btn-primary btn-xs" style="position:relative;bottom:4px; background-color:#f9f9f9"><img src="/images/reply.png"></button>'."</span><br>";
+                        echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . "<span style='float: right'> " . $row["date_time"] . "&nbsp&nbsp&nbsp";
+             ?>
+                        <button type="button" class="btn btn-primary btn-xs commentButton" onclick="hideShow( <?php echo $count; ?> )"><img src="/images/reply.png"></button></span><br>
+            <?php
+                        // reply's input text field
+                        echo "<div style='display: none;' id='lalaland" . $count . "'>";
+                            echo "This is my lalaland<br>";
+                        echo "</div>";
 
                         // fetch commentid
                         $commentid = $row["commentid"];
@@ -151,7 +175,7 @@
                             } // end find comment's comment
 
                         }
-                        echo '<hr style="border-width: 2px; border-color: #3e3831;">';
+                        echo '<hr style="border-width: 3px; border-color: #3e3831;">';
                     } // end find post's comment
                 }
                 include "disconnectToDB.php";

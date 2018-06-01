@@ -19,6 +19,11 @@ footer {
 #onemillion{
   background-color: #ff5511;
 }
+.commentButton {
+    position: relative;
+    bottom: 4px;
+    background-color: #f9f9f9;
+}
 .row {
     margin: 0px;
 }
