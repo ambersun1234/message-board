@@ -44,7 +44,7 @@
         </script>
         <?php include "statusColumn.php"; ?>
 
-        <?php
+        <?php // common part
             include "connectToDB.php";
 
             $title = $username = $time = $postid = $article = $userid = "";
@@ -115,11 +115,27 @@
                     include "connectToDB.php";
 
                     $userid = getUserid( $con , $_SESSION["user"] );
+                    $commentid = getData( $con , $_GET["commentid"] );
                     $reply = getData( $con , $_POST["_reply"] );
+                    $replyid = getReplyid( $con );
 
-                    // get data prefectly
+                    $reply = str_replace( '&#13;' , '<br>' , $reply );
+//echo "<br><br>userid = " .  $userid . "<br>commentid = " . $commentid . "<br>reply = " . $reply . "<br>replyid = " . $replyid . "<br>";
+                    $sql = "insert into reply( userid , commentid , replyid , text ) ";
+                    $sql .= "value( " . $userid . " , " . $commentid . " , " . $replyid . " , '" . $reply .  "' )";
+                    $query = mysqli_query( $con , $sql );
+
+                    if ( !$query ) $replyErr = "comment failed , please try again...<br>"; // insert failed
+                    else header("Location: /displayPost.php?postid=" . $postid . "&title=" . $title );
 
                     include "disconnectToDB.php";
+                }
+                function getReplyid( $con ) {
+                    $sql = "select max( replyid ) as replyid from reply";
+                    $query = mysqli_query( $con , $sql );
+                    $row = $query->fetch_assoc();
+
+                    return $row["replyid"] + 1;
                 }
            ?>
 
@@ -180,9 +196,9 @@
                                 else $image = $row["image"];
 
                                 // display comment's comment
-                                echo "<span class='white_space'>";
+                                echo "<p class='white_space' style='text-align: left;'>";
                                 echo "        ";
-                                echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . "<span style='float: right;'>" . $row["date_time"] ."        </span><br></span>";
+                                echo "<img src='/images/" . $image . "' alt='Profile picture' height='30' width='30'>" . $row["username"] . " : " . $row["text"] . "<span style='float: right;'>" . $row["date_time"] ."</span></p>";
                             } // end find comment's comment
 
                         }
@@ -194,9 +210,9 @@
                                     <img style="float: right;" src="/images/<?php echo $_SESSION["image"]; ?>" alt="Profile picture" height="30" width="30">
                                 </div>
                                 <div class="col-xs-11" style="padding: 0px;">
-                                    <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] ) . '?postid=' . $postid . '&title=' . $titl; ?>">
+                                    <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] ) . '?postid=' . $postid . '&title=' . $title . '&commentid=' . $commentid; ?>">
                                         <textarea style="background-color: #FFF0D4;width: 100%;padding: 5px;" name="_reply" rows="3" placeholder="enter your reply"><?php echo $reply; ?></textarea>
-                                        <?php if ( $commentErr != "" ) echo '<div class="invalid">' . $commentErr . '</div>'; // show error when comment failed ?>
+                                        <?php if ( $replyErr != "" ) echo '<div class="invalid">' . $replyErr . '</div>'; // show error when reply failed ?>
                                         <button type="submit" name="submit_reply" class="btn btn-default" style="background-color: #ff6060; color: #ffffff;">Add reply</button>
                                     </form>
                                 </div>
