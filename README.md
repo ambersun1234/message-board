@@ -1,11 +1,11 @@
 # message-board
 
-+ ### Build for everyone!!<hr>
++ ### Build For Everyone!!<hr>
     + Our goal is to create a platform for everyone to talk with.
 You can talk to people around the world by using message-board.
 Sign up or Sign in to enjoy our service!!.
 
-+ ### Getting started<hr>
++ ### Getting Started<hr>
 
     + #### Requirements
         + ubuntu 16.04 LTS
@@ -13,12 +13,12 @@ Sign up or Sign in to enjoy our service!!.
         + php 7.0.30-0ubuntu.16.04.1 (cli) ( NTS )
         + mysql Ver 14.14 Distrib 5.7.22 for Linux(x86_64)
 
-    + #### Clone repo
+    + #### Clone Repo
         ```shell=1
-        git clone https://github.com/aeternum1234/message-board.git ~/Documents/www
+        git clone https://github.com/ambersun1234/message-board.git ~/Documents/www
         ```
 
-    + #### Configure the apache web server
+    + #### Configure The Apache Web Server
         ```shell=1
         sudo vim /etc/apache/apache2.conf
         ```
@@ -55,14 +55,14 @@ Sign up or Sign in to enjoy our service!!.
         ```shell=1
         sudo service apache2 restart
         ```
-    + #### Configure the mysql database
+    + #### Configure The Mysql Database
         set mysql username = 'root' and password = '1234'
 
 + ### Running
     + just start your apache and mysql , and type 'localhost' in your web browser
 
 + ### License
-    + This project is licensed under MIT License - see the [LICENSE](https://github.com/aeternum1234/message-board/blob/master/LICENSE) file for detail
+    + This project is licensed under MIT License - see the [LICENSE](https://github.com/ambersun1234/message-board/blob/master/LICENSE) file for detail
 
 + ### Photo<hr>
     + index
