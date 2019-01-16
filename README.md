@@ -56,7 +56,44 @@ Sign up or Sign in to enjoy our service!!.
         sudo service apache2 restart
         ```
     + #### Configure The Mysql Database
-        set mysql username = 'root' and password = '1234'
+        + set mysql username = 'root' and password = '1234'
+        + message board database sql
+        ```sql=1
+        CREATE DATABASE `message_db`;
+
+        CREATE TABLE `message_db`.`account` (
+          `userid` int(11) NOT NULL PRIMARY KEY,
+          `username` varchar(1024) NOT NULL UNIQUE,
+          `password` varchar(1024) NOT NULL,
+          `email` varchar(1024) NOT NULL UNIQUE,
+          `image` varchar(1024) NOT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+        CREATE TABLE `message_db`.`comment` (
+          `userid` int(11) NOT NULL,
+          `postid` int(11) NOT NULL,
+          `commentid` int(11) NOT NULL PRIMARY KEY,
+          `text` varchar(1024) NOT NULL,
+          `date_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+        CREATE TABLE `message_db`.`post` (
+          `userid` int(11) NOT NULL,
+          `postid` int(11) NOT NULL PRIMARY KEY,
+          `title` varchar(1024) NOT NULL,
+          `article` text NOT NULL,
+          `date_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `boardid` varchar(30) NOT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+        CREATE TABLE `message_db`.`reply` (
+          `userid` int(11) NOT NULL,
+          `commentid` int(11) NOT NULL,
+          `replyid` int(11) NOT NULL PRIMARY KEY,
+          `text` varchar(1024) NOT NULL,
+          `date_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        ```
 
 + ### Running
     + just start your apache and mysql , and type 'localhost' in your web browser
