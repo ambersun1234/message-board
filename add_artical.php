@@ -47,7 +47,7 @@
                     $postid = findPostid( $con );
 
                     if ( checkBoard( $boardid ) != false && $postErr == "" ) {
-                        $article = str_replace( '&#13;' , '<br>' , $article );
+                        // $article = str_replace( '&#13;' , '<br>' , $article );
 
                         $sql = "insert into post( userid , postid , title , article , boardid )";
                         $sql .= " value( " . $id . " , " . $postid . " , '" . $title . "' , '" . $article . "' , '" . $boardid . "' )";
@@ -87,8 +87,8 @@
                 $data = stripslashes( $data ); // remove all \
                 $data = htmlspecialchars( $data ); // turn &"'<> to real entity
                 $data = mysqli_real_escape_string( $con , $data );
-                $data = str_replace( '\r' , '' , $data ); // replace new line
-                $data = str_replace( '\n' , '&#13;' , $data ); // replace new line
+                // $data = str_replace( '\r' , '' , $data ); // replace new line
+                // $data = str_replace( '\n' , '&#13;' , $data ); // replace new line
                 return $data;
             }
             function checkTitle( $title ) {
@@ -109,8 +109,16 @@
         <?php include "statusColumn.php"; ?>
 
         <div class="add_artical">
+            <div style="text-align: center; width: 100%; padding: 5px; margin: 10px; font-size: 22px;">
+                You are now posting to
+                <span style="font-style: oblique; color: #ff6060;">
+                    <?php echo $_GET['boardid']; ?>
+                </span>
+                board
+            </div>
+
             <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] ) . '?boardid=' . $_GET['boardid'];?>">
-                <br>title:<br>
+                title:<br>
                 <!-- note: textarea does not have value attribute , so php echo should write in the middle of textarea -->
                 <textarea name="_title" rows="1" cols="1" maxlength="1024"><?php echo $title; ?></textarea><br>
                 <?php echo "<div class='invalid'>" . $titleErr . "</div>"; ?>
@@ -118,7 +126,7 @@
                 <br>
                 article:<br>
                 ( article must have at least 10 words )<br>
-                <textarea name="_artical" rows="15"><?php echo $article;?></textarea><br>
+                <textarea name="_artical" rows="15"><?php echo nl2br( $article ); ?></textarea><br>
                 <?php echo "<div class='invalid'>" . $articleErr . "</div>"; ?>
 
                 <!-- pass boardid to php after submit form -->

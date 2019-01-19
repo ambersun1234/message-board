@@ -13,10 +13,17 @@
 
     </head>
     <body style="background-color: #f9f9f9;">
-        <?php include "statusColumn.php" ?>
 
-        <div class="col-xs-9 post">
-            <br>
+        <div style="width: 65%; margin: 0 auto;">
+            <div style="padding: 5px 5px;">
+                <?php if ( $_SESSION["loggedin"] == true ) { ?>
+                    <br>
+                    <button type="button" class="btn btn-default" onclick="location.href='add_artical.php?boardid=<?php echo $_GET["boardid"]; ?>'" style="background-color: #ff7474; color: black; font-size:15px; position:relative;">New post<img src="/images/edit.png"></button>
+                <?php } ?>
+            </div>
+
+            <?php include "statusColumn.php" ?>
+
             <?php
                 include "connectToDB.php";
 
@@ -40,7 +47,7 @@
                     }
 
                 }
-                else echo "There is no post yet!!<br>";
+                else echo "<span style='font-size: 20px; font-style: oblique;'>There is no post yet!!<br></span>";
 
                 function getUsername( $con , $id ) {
                     $sql = "select username from account where userid = '" . $id . "'";
@@ -56,11 +63,5 @@
                 }
              ?>
         </div>
-        <?php if ( $_SESSION["loggedin"] == true ) { ?>
-            <div class="col-xs-3">
-                <br>
-                <button type="button" class="btn btn-default" onclick="location.href='add_artical.php?boardid=<?php echo $boardid; ?>'" style="background-color: #ff7474; color: black; font-size:15px; position:relative; top:10px;">New post<img src="/images/edit.png"></button>
-            </div>
-        <?php } ?>
     </body>
 </html>
