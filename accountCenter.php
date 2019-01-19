@@ -13,6 +13,9 @@
 
         <!-- Font Awesome -->
         <link rel="stylesheet" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+
+        <!-- jquery cdn -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
 
     <body style="background-color: #f9f9f9">
@@ -274,7 +277,9 @@
                      <div class="col-xs-3" style="padding: 5px 5px;">
                          <h3 style="text-align: center;">Profile Picture</h3>
                          <?php echo "<img src='/images/" . $imageFilePath . "'>"?>
-                         <input accept="image/jpeg,image/png,image/jpg" type="file" name="fileToUpload">
+                         <input accept="image/jpeg,image/png,image/jpg" type="file" name="fileToUpload" style="padding: 0px;">
+                         <button id="resetPicture" class="btn btn-default btn-xs">Reset profile picture to default</button>
+                         <div id="resetPictureText"></div>
                          <?php
                             if ( $fileErr != "" ) echo "<div class='invalid' style='text-align: center;'>" . $fileErr . "</div>";
                             else if ( $fileSuc != "" ) echo "<div class='valid' style='text-align: center;'>" . $fileSuc . "</div>";
@@ -360,3 +365,21 @@
         </div>
     </body>
 </html>
+
+<script type="text/javascript">
+    $( "#resetPicture" ).on( "click" , function() {
+        var userid = <?php echo $GLOBALS["userid"]; ?>;
+
+        $.post( "./picture.php" , { userid : userid , job : 1 } , function( data ) {
+            if ( data.code == 0 ) {
+                window.location.href = "./statusColumn.php";
+                location.reload();
+            }
+            else {
+                $( "#resetPictureText" ).text( data.message ).addClass( "invalid" );
+            }
+        } , "json" ).fail( function() {
+            $( "#resetPictureText" ).text( data.message ).addClass( "invalid" );
+        });
+    });
+</script>
