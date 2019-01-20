@@ -10,8 +10,20 @@
         <link href="custom.css" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript">
+            $( document ).ready( function() {
+                var boardid = "<?php echo $_GET["boardid"]; ?>";
+                if ( boardid == "Gossip" || boardid == "News" || boardid == "Gaming" ) {
+
+                }
+                else {
+                    $( "#invalidBoard" ).css( { "text-align" : "center" , "padding" : "20px" , "color" : "#ff0000" } );
+                }
+            });
+        </script>
 
         <title>add new post</title>
 
@@ -46,7 +58,7 @@
                     $id = findUserid( $con , $_SESSION["user"] );
                     $postid = findPostid( $con );
 
-                    if ( checkBoard( $boardid ) != false && $postErr == "" ) {
+                    if ( boardidValid( $boardid ) != false && $postErr == "" ) {
                         // $article = str_replace( '&#13;' , '<br>' , $article );
 
                         $sql = "insert into post( userid , postid , title , article , boardid )";
@@ -61,7 +73,7 @@
 
                 include "disconnectToDB.php";
             }
-            function checkBoard( $board ) {
+            function boardidValid( $board ) {
                 if ( $board == "Gaming" || $board == "News" || $board == "Gossip" ) return true;
                 else {
                     $GLOBALS["postErr"] = "Something went wrong , please try again...<br>";
@@ -108,35 +120,46 @@
 
         <?php include "statusColumn.php"; ?>
 
-        <div class="add_artical">
-            <div style="text-align: center; width: 100%; padding: 5px; margin: 10px; font-size: 22px;">
-                You are now posting to
-                <span style="font-style: oblique; color: #ff6060;">
-                    <?php echo $_GET['boardid']; ?>
-                </span>
-                board
-            </div>
+        <div id="invalidBoard" class="add_artical">
+        <?php
+            if ( boardidValid( $_GET["boardid"] ) ) {
+         ?>
+                <div style="text-align: center; width: 100%; padding: 5px; margin: 10px; font-size: 22px;">
+                    You are now posting to
+                    <span style="font-style: oblique; color: #ff6060;">
+                        <?php echo $_GET['boardid']; ?>
+                    </span>
+                    board
+                </div>
 
-            <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] ) . '?boardid=' . $_GET['boardid'];?>">
-                title:<br>
-                <!-- note: textarea does not have value attribute , so php echo should write in the middle of textarea -->
-                <textarea name="_title" rows="1" cols="1" maxlength="1024"><?php echo $title; ?></textarea><br>
-                <?php echo "<div class='invalid'>" . $titleErr . "</div>"; ?>
+                <form method="post" action="<?php echo htmlspecialchars( $_SERVER["PHP_SELF"] ) . '?boardid=' . $_GET['boardid'];?>">
+                    title:<br>
+                    <!-- note: textarea does not have value attribute , so php echo should write in the middle of textarea -->
+                    <textarea name="_title" rows="1" cols="1" maxlength="1024"><?php echo $title; ?></textarea><br>
+                    <?php echo "<div class='invalid'>" . $titleErr . "</div>"; ?>
 
-                <br>
-                article:<br>
-                ( article must have at least 10 words )<br>
-                <textarea name="_artical" rows="15"><?php echo nl2br( $article ); ?></textarea><br>
-                <?php echo "<div class='invalid'>" . $articleErr . "</div>"; ?>
+                    <br>
+                    article:<br>
+                    ( article must have at least 10 words )<br>
+                    <textarea name="_artical" rows="15"><?php echo nl2br( $article ); ?></textarea><br>
+                    <?php echo "<div class='invalid'>" . $articleErr . "</div>"; ?>
 
-                <!-- pass boardid to php after submit form -->
-                <input type="hidden" name="_boardid" value="<?php echo $_GET['boardid'];?>">
+                    <!-- pass boardid to php after submit form -->
+                    <input type="hidden" name="_boardid" value="<?php echo $_GET['boardid'];?>">
 
-                <br>
-                <button type="submit" name="SUBMIT" class="btn btn-default" style="background-color: #ff6060; color: #ffffff;">Submit</button>
-                <button type="reset" class="btn btn-default">Reset</button>
-                <?php echo "<div class='invalid'>" . $postErr . "</div>"; ?>
-            </form>
+                    <br>
+                    <button type="submit" name="SUBMIT" class="btn btn-default" style="background-color: #ff6060; color: #ffffff;">Submit</button>
+                    <button type="reset" class="btn btn-default">Reset</button>
+                    <?php echo "<div class='invalid'>" . $postErr . "</div>"; ?>
+                </form>
+        <?php
+            }
+            else {
+         ?>
+                <span style="font-size: 20px; font-style: oblique;">Invalid board , please don't change URL parameter<br></span>
+        <?php
+            }
+         ?>
         </div>
     </body>
 </html>

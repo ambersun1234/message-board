@@ -11,12 +11,24 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <title><?php echo $_GET["boardid"]; ?></title>
 
+        <script type="text/javascript">
+            $( document ).ready( function() {
+                var boardid = "<?php echo $_GET["boardid"]; ?>";
+                if ( boardid == "Gossip" || boardid == "News" || boardid == "Gaming" ) {
+
+                }
+                else {
+                    $( "#invalidBoard" ).css( { "text-align" : "center" , "padding" : "20px" , "color" : "#ff0000" } );
+                }
+            });
+        </script>
+
     </head>
     <body style="background-color: #f9f9f9;">
 
-        <div style="width: 65%; margin: 0 auto;">
+        <div id="invalidBoard" style="width: 65%; margin: 0 auto;">
             <div style="padding: 5px 5px;">
-                <?php if ( $_SESSION["loggedin"] == true ) { ?>
+                <?php if ( $_SESSION["loggedin"] == true && boardidValid( $_GET["boardid"] ) ) { ?>
                     <br>
                     <button type="button" class="btn btn-default" onclick="location.href='add_artical.php?boardid=<?php echo $_GET["boardid"]; ?>'" style="background-color: #ff7474; color: black; font-size:15px; position:relative;">New post<img src="/images/edit.png"></button>
                 <?php } ?>
@@ -33,22 +45,40 @@
                 $sql = "select userid , postid , title , date_time as time from post where boardid = '" . $boardid . "' order by time DESC";
                 $query = mysqli_query( $con , $sql );
 
-                if ( $query->num_rows > 0 ) { // post found
+                if ( $query->num_rows > 0 && boardidValid( $boardid ) ) { // post found
                     while ( $row = $query->fetch_assoc() ) { // show all post
                         $username = getUsername( $con , $row["userid"] );
-                        echo "<div class='postview'>";
-                            echo '<a href="/displayPost.php?postid=' . $row['postid'] . '&title=' . $row['title'] . '">' . $row['title'] . '</a><br>';
-                            echo "<p style='text-align: left;'>"; // same line but left
-                                echo $username;
-                            echo "<span style='float: right;'>"; // same line but right
-                                echo $row["time"];
-                            echo "</span></p>";
-                        echo "</div>";
+             ?>             <div class='postview'>
+                            <a href="/displayPost.php?postid=<?php echo $row['postid']; ?>&title=<?php echo $row['title']; ?>"><?php echo $row['title']; ?></a><br>
+                            <p style='text-align: left;'><!-- same line but left -->
+                                <?php echo $username; ?>
+                            <span style='float: right;'><!-- same line but right -->
+                                <?php echo $row["time"]; ?>
+                            </span></p>
+                        </div>
+            <?php
                     }
 
                 }
-                else echo "<span style='font-size: 20px; font-style: oblique;'>There is no post yet!!<br></span>";
-
+                else {
+                    if ( boardidValid( $boardid ) ) {
+             ?>
+                        <span style="font-size: 20px; font-style: oblique;">There is no post yet!!<br></span>
+            <?php
+                    }
+                    else {
+             ?>
+                        <span style="font-size: 20px; font-style: oblique;">Invalid board , please don't change URL parameter<br></span>
+            <?php
+                    }
+                }
+                function boardidValid( $boardid ) {
+                    $valid = false;
+                    if ( $boardid == "Gossip" || $boardid == "News" || $boardid == "Gaming" ) {
+                        $valid = true;
+                    }
+                    return $valid;
+                }
                 function getUsername( $con , $id ) {
                     $sql = "select username from account where userid = '" . $id . "'";
                     $query = mysqli_query( $con , $sql );

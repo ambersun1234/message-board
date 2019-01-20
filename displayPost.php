@@ -29,6 +29,11 @@
                     x.style.display = "none";
                 }
             }
+            $( document ).ready( function() {
+                if ( check ) {
+                    $( "#invalidPost" ).css( { "text-align" : "center" , "padding" : "20px" , "color" : "#ff0000" } );
+                }
+            });
         </script>
 
         <title><?php echo $_GET["title"]; ?></title>
@@ -55,6 +60,18 @@
             $sql = "select a.username , a.userid , p.date_time , p.article from account as a , post as p where p.postid = " . $postid . " and p.userid = a.userid";
             $query = mysqli_query( $con , $sql );
             $row = $query->fetch_assoc();
+
+            $postidValid = $query->num_rows;
+            if ( $postidValid != 1 ) {
+         ?>
+                <script type="text/javascript">var check = true;</script>
+        <?php
+            }
+            else {
+         ?>
+                <script type="text/javascript">var check = false;</script>
+        <?php
+            }
 
             $username = $row["username"];
             $time = $row["date_time"];
@@ -146,27 +163,9 @@
            ?>
 
          <br>
-         <div class="displayPost">
-             <div class="row">
-                 <div class="col-xs-1" style="background-color: #ffd460"> <!-- display post basic information -->
-                     <span class="white_space">Title<br></span>
-                     <span class="white_space">Author<br></span>
-                     <span class="white_space">Time<br></span>
-                 </div>
-                 <div class="col-xs-11" style="background-color: #ffe99e";>
-                     <?php echo $title; ?><br>
-                     <?php echo $username; ?><br>
-                     <?php echo $time; ?><br>
-                 </div>
-             </div>
-             <hr style="border-width: 3px; border-color: #f9f9f9;">
-
-             <!-- display post article -->
-             <?php echo nl2br( $article ); ?>
-
-             <hr style="border-width: 4px; border-color: #ffce94;">
-
+         <div id="invalidPost" class="displayPost">
              <?php
+                // query post's comment
                 include "connectToDB.php";
 
                 $sql = "select a.username , a.image , p.postid , c.date_time , c.text , c.commentid ";
@@ -176,7 +175,27 @@
                 $query = mysqli_query( $con , $sql );
                 $count = 0;
 
-                if ( $query->num_rows > 0 ) { // find post's comment
+                if ( $postidValid ) { // find post's comment
+             ?>
+                     <div class="row">
+                         <div class="col-xs-1" style="background-color: #ffd460"> <!-- display post basic information -->
+                             <span class="white_space">Title<br></span>
+                             <span class="white_space">Author<br></span>
+                             <span class="white_space">Time<br></span>
+                         </div>
+                         <div class="col-xs-11" style="background-color: #ffe99e";>
+                             <?php echo $title; ?><br>
+                             <?php echo $username; ?><br>
+                             <?php echo $time; ?><br>
+                         </div>
+                     </div>
+                     <hr style="border-width: 3px; border-color: #f9f9f9;">
+
+                     <!-- display post article -->
+                     <?php echo nl2br( $article ); ?>
+
+                     <hr style="border-width: 4px; border-color: #ffce94;">
+            <?php
                     $check = 0;
                     while ( $row = $query->fetch_assoc() ) {
                         $count++;
@@ -277,12 +296,12 @@
                         </div>
             <?php
                     } // end find post's comment
-                }
+                } // end postid valid
                 include "disconnectToDB.php";
              ?>
             <?php
                 include "connectToDB.php";
-                if ( isset( $_SESSION['loggedin'] ) && $_SESSION['loggedin'] == true ) {
+                if ( isset( $_SESSION['loggedin'] ) && $_SESSION['loggedin'] == true && $postidValid ) {
              ?>
                     <!-- post comment -->
                     <div class="row">
@@ -305,6 +324,11 @@
                             </form>
                         </div>
                     </div>
+            <?php
+                }
+                else {
+             ?>
+                    <span style="font-size: 20px; font-style: oblique;">Invalid post , please don't change URL parameter<br></span>
             <?php
                 }
                 include "disconnectToDB.php";
