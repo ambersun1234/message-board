@@ -29,6 +29,9 @@
                     x.style.display = "none";
                 }
             }
+            function addTitle( title ) {
+                $( "title" ).text( title );
+            }
             $( document ).ready( function() {
                 if ( check ) {
                     $( "#invalidPost" ).css( { "text-align" : "center" , "padding" : "20px" , "color" : "#ff0000" } );
@@ -36,7 +39,7 @@
             });
         </script>
 
-        <title><?php echo $_GET["title"]; ?></title>
+        <title></title>
 
     </head>
 
@@ -54,10 +57,9 @@
 
             $title = $username = $time = $postid = $article = $userid = "";
 
-            $title = getData( $con , $_GET["title"] );
             $postid = getData( $con , $_GET["postid"] );
 
-            $sql = "select a.username , a.userid , p.date_time , p.article from account as a , post as p where p.postid = " . $postid . " and p.userid = a.userid";
+            $sql = "select a.username , a.userid , p.date_time , p.article , p.title from account as a , post as p where p.postid = " . $postid . " and p.userid = a.userid";
             $query = mysqli_query( $con , $sql );
             $row = $query->fetch_assoc();
 
@@ -72,7 +74,11 @@
                 <script type="text/javascript">var check = false;</script>
         <?php
             }
+         ?>
+            <script type="text/javascript">addTitle( "<?php echo $row["title"]; ?>" );</script>
+        <?php
 
+            $title = $row["title"];
             $username = $row["username"];
             $time = $row["date_time"];
             $userid = $row["userid"];

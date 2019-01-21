@@ -49,7 +49,7 @@
                     while ( $row = $query->fetch_assoc() ) { // show all post
                         $username = getUsername( $con , $row["userid"] );
              ?>             <div class='postview'>
-                            <a href="/displayPost.php?postid=<?php echo $row['postid']; ?>&title=<?php echo $row['title']; ?>"><?php echo $row['title']; ?></a><br>
+                            <a href="/displayPost.php?postid=<?php echo $row['postid']; ?>"><?php echo $row['title']; ?></a><br>
                             <p style='text-align: left;'><!-- same line but left -->
                                 <?php echo $username; ?>
                             <span style='float: right;'><!-- same line but right -->
