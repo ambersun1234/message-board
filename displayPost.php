@@ -36,6 +36,21 @@
                 if ( check ) {
                     $( "#invalidPost" ).css( { "text-align" : "center" , "padding" : "20px" , "color" : "#ff0000" } );
                 }
+
+                $( "span.changeColor" ).each( function() {
+                    var str = $( this ).text();
+
+                    if ( str.charAt( 0 ) == "(" ) {
+                        var color = str.substring( 1 , str.indexOf( ")" ) );
+
+                        if ( !color.includes( "<script" ) ) {
+                            var storeStr = str.substring( str.indexOf( ")" ) + 1 );
+
+                            $( this ).text( storeStr );
+                            $( this ).css( 'color' , color );
+                        }
+                    }
+                });
             });
         </script>
 
@@ -84,6 +99,9 @@
             $userid = $row["userid"];
             $article = $row["article"];
 
+            $article = str_replace( "(::" , "<span class=\"changeColor\">" , $article );
+            $article = str_replace( "::)" , "</span>" , $article );
+
             include "disconnectToDB.php";
 
             function getData( $con , $data ) {
@@ -106,7 +124,8 @@
                 $commentid = getCommentid( $con );
                 $comment = getData( $con , $_POST["_comment"] );
 
-                // $comment = str_replace( '&#13;' , '<br>' , $comment );
+                $comment = str_replace( "(::" , "<span class=\"changeColor\">" , $comment );
+                $comment = str_replace( "::)" , "</span>" , $comment );
 
                 $sql = "insert into comment( userid , postid , commentid , text ) ";
                 $sql .= "value( " . $userid . " , " . $postid . " , " . $commentid . " , '" . $comment . "' )";
@@ -145,7 +164,8 @@
                     $reply = getData( $con , $_POST["_reply"] );
                     $replyid = getReplyid( $con );
 
-                    // $reply = str_replace( '&#13;' , '<br>' , $reply );
+                    $reply = str_replace( "(::" , "<span class=\"changeColor\">" , $reply );
+                    $reply = str_replace( "::)" , "</span>" , $reply );
 
                     $sql = "insert into reply( userid , commentid , replyid , text ) ";
                     $sql .= "value( " . $userid . " , " . $commentid . " , " . $replyid . " , '" . $reply .  "' )";
@@ -184,7 +204,8 @@
                 if ( $postidValid ) { // find post's comment
              ?>
                      <div class="row">
-                         <div class="col-xs-1" style="background-color: #ffd460"> <!-- display post basic information -->
+                         <!-- display post basic information -->
+                         <div class="col-xs-1" style="background-color: #ffd460">
                              <span class="white_space">Title<br></span>
                              <span class="white_space">Author<br></span>
                              <span class="white_space">Time<br></span>

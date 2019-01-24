@@ -59,14 +59,14 @@
                     $postid = findPostid( $con );
 
                     if ( boardidValid( $boardid ) != false && $postErr == "" ) {
-                        // $article = str_replace( '&#13;' , '<br>' , $article );
-
                         $sql = "insert into post( userid , postid , title , article , boardid )";
                         $sql .= " value( " . $id . " , " . $postid . " , '" . $title . "' , '" . $article . "' , '" . $boardid . "' )";
 
                         $query = mysqli_query( $con , $sql );
 
-                        if ( !$query ) $postErr = "Something went wrong , please try again...<br>";
+                        if ( !$query ) {
+                            $postErr = "Something went wrong , please try again...<br>";
+                        }
                         else header("Location: /displayBoard.php?boardid=" . $boardid);
                     }
                 }
