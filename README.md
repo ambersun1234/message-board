@@ -4,6 +4,17 @@
     + Our goal is to create a platform for everyone to talk with.
 You can talk to people around the world by using message-board.
 Sign up or Sign in to enjoy our service!!.
+    + users can `post article` , `leave a comment or reply` , and will have a `personal account center` to check your total posts , comments and replies
+
++ ### New Feature
+    + #### color text
+        + ![](https://i.imgur.com/PsWEsx7.png)
+        + you can now adding color to **post** , **comment** , **reply** , by inputting specific pattern
+        ```=1
+        (::(red)color name demo::)
+        (::(#ffaa00)hex value demo::)
+        ```
+        + you can enter **color names**( html predefined color names ) or **hex values** to put color on your text
 
 + ### Getting Started<hr>
 
