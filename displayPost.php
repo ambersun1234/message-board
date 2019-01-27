@@ -19,6 +19,10 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
         <script>
+            String.prototype.replaceAll = function( search , replacement ) {
+                var target = this;
+                return target.split( search ).join( replacement );
+            };
             function hideShow( id ) {
                 var x = document.getElementById("lalaland" + id );
 
@@ -31,6 +35,11 @@
             }
             function addTitle( title ) {
                 $( "title" ).text( title );
+            }
+            function format( input ) {
+                input = input.replaceAll( "(::" , "<span class=\"changeColor\">" );
+                input = input.replaceAll( "\n" , "<br>" );
+                return input.replaceAll( "::)" , "</span>" );
             }
             $( document ).ready( function() {
                 if ( check ) {
@@ -51,6 +60,61 @@
                         }
                     }
                 });
+
+                $( "#postModifyButton" ).on( "click" , function() {
+                    if ( $( "#originalPost" ).is( ":visible" ) ) {
+                        $( "#originalPost" ).toggle();
+                        $( "#modifyPost" ).toggle();
+                        $( "#postSubmitButton" ).toggle();
+                        $( "#postModifyButton" ).text( "exit modify" );
+                    }
+                    else {
+                        $( "#originalPost" ).toggle();
+                        $( "#modifyPost" ).toggle();
+                        $( "#postSubmitButton" ).toggle();
+                        $( "#postModifyButton" ).text( "modify" );
+                    }
+                });
+
+                $( "#postSubmitButton" ).on( "click" , function() {
+                    var _type = $( "#post_type" ).val();
+                    var _text = $( "#post_text" ).val();
+                    var _id = $( "#post_id" ).val();
+
+                    $.post( "./updateText.php" , { id : _id , type : _type , text : _text } , function( data ) {
+                        if ( data.code == 0 ) {
+                            // success
+                            $( "#textItself" ).html( format( data.text ) );
+
+                            // re-trigger jquery event
+                            $( "span.changeColor" ).each( function() {
+                                var str = $( this ).text();
+
+                                if ( str.charAt( 0 ) == "(" ) {
+                                    var color = str.substring( 1 , str.indexOf( ")" ) );
+
+                                    if ( !color.includes( "<script" ) ) {
+                                        var storeStr = str.substring( str.indexOf( ")" ) + 1 );
+
+                                        $( this ).text( storeStr );
+                                        $( this ).css( 'color' , color );
+                                    }
+                                }
+                            });
+
+                            // hide , show toggle
+                            $( "#originalPost" ).toggle();
+                            $( "#modifyPost" ).toggle();
+                            $( "#postSubmitButton" ).toggle();
+                            $( "#postModifyButton" ).text( "modify" );
+                        }
+                        else {
+                            alert( data.text );
+                        }
+                    } , "json" ).fail( function() {
+                        alert( "something went wrong , please try again..." );
+                    });
+                });
             });
         </script>
 
@@ -66,6 +130,14 @@
             }
         </script>
         <?php include "statusColumn.php"; ?>
+
+        <?php
+            function unformat( $input ) {
+                $input = str_replace( "<span class=\"changeColor\">" , "(::" , $input );
+                $input = str_replace( "</span>" , "::)" , $input );
+                return $input;
+            }
+         ?>
 
         <?php // common part
             include "connectToDB.php";
@@ -218,14 +290,36 @@
                      </div>
 
                      <!-- display post article -->
-                     <div class="row">
+                     <div id="originalPost" class="row">
                          <div class="col-xs-1">
                          </div>
-                         <div class="col-xs-11" style="padding-top: 15px; padding-bottom: 15px;">
+                         <div id="textItself" class="col-xs-10" style="padding-top: 15px; padding-bottom: 15px;">
                              <?php echo nl2br( $article ); ?>
                          </div>
                      </div>
 
+                     <div id="modifyPost" class="row" style="display: none;">
+                         <div class="col-xs-1">
+                         </div>
+                         <div class="col-xs-11" style="padding-top: 15px; padding-bottom: 15px;">
+                             <!-- <form id="modifyPostForm" method="post" action="./updateText.php"> -->
+                                 <textarea id="post_text" rows="6" style="width: 100%;"><?php echo unformat( $article ); ?></textarea>
+                                 <input id="post_id" value="<?php echo $postid; ?>" style="display: none;">
+                                 <input id="post_type" value="post" style="display: none;">
+                             <!-- </form> -->
+                         </div>
+                     </div>
+
+            <?php
+                    if ( isset( $_SESSION['loggedin'] ) && $_SESSION['loggedin'] == true ) {
+             ?>
+                        <div class="row">
+                            <button id="postSubmitButton" type="button" class="btn btn-outline-success" style="margin: 5px; float: right; display: none;">save</button>
+                            <button id="postModifyButton" type="submit" class="btn btn-outline-secondary" style="margin: 5px; float: right">modify</button>
+                        </div>
+            <?php
+                    }
+             ?>
                      <hr style="margin-bottom: 15px; border-width: 4px; border-color: #ffce94;">
             <?php
                     while ( $row = $query->fetch_assoc() ) {

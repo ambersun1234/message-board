@@ -260,6 +260,10 @@ footer {
   opacity: 0.6;
 }
 
+textarea {
+    border-radius: 15px;
+}
+
 /*responsive styling*/
 @media (max-width: 1199px) {
   .jumbotron h1{
