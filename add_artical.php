@@ -54,6 +54,7 @@
                 checkArticle( $article );
 
                 if ( checkValid( $titleErr , $articleErr ) ) {
+                    $article = convertNewLineBack( $article );
 
                     $id = findUserid( $con , $_SESSION["user"] );
                     $postid = findPostid( $con );
@@ -72,6 +73,11 @@
                 }
 
                 include "disconnectToDB.php";
+            }
+            function convertNewLineBack( $data ) {
+                $data = str_replace( '' , '\r' , $data ); // replace new line
+                $data = str_replace( '&#13' , '\n;' , $data ); // replace new line
+                return $data;
             }
             function boardidValid( $board ) {
                 if ( $board == "Gaming" || $board == "News" || $board == "Gossip" ) return true;
@@ -99,8 +105,8 @@
                 $data = stripslashes( $data ); // remove all \
                 $data = htmlspecialchars( $data ); // turn &"'<> to real entity
                 $data = mysqli_real_escape_string( $con , $data );
-                // $data = str_replace( '\r' , '' , $data ); // replace new line
-                // $data = str_replace( '\n' , '&#13;' , $data ); // replace new line
+                $data = str_replace( '\r' , '' , $data ); // replace new line
+                $data = str_replace( '\n' , '&#13;' , $data ); // replace new line
                 return $data;
             }
             function checkTitle( $title ) {
