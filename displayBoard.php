@@ -13,7 +13,11 @@
 
         <script type="text/javascript">
             $( document ).ready( function() {
-                var boardid = "<?php echo $_GET["boardid"]; ?>";
+                var boardid = "<?php echo htmlspecialchars( $_GET["boardid"] ); ?>";
+                var search = "<?php echo htmlspecialchars( $_GET["search"] ); ?>";
+
+                $( "#query input" ).val( search );
+                
                 if ( boardid == "Gossip" || boardid == "News" || boardid == "Gaming" ) {
 
                 }
@@ -21,6 +25,10 @@
                     $( "#invalidBoard" ).css( { "text-align" : "center" , "padding" : "20px" , "color" : "#ff0000" } );
                 }
             });
+            function searchQuery() {
+                var query = $( "#query input" ).val();
+                window.location.href = "./displayBoard.php?boardid=<?php echo htmlspecialchars( $_GET["boardid"] ); ?>&search=" + query;
+            }
         </script>
 
     </head>
@@ -30,8 +38,14 @@
             <div style="padding: 5px 5px;">
                 <?php if ( $_SESSION["loggedin"] == true && boardidValid( $_GET["boardid"] ) ) { ?>
                     <br>
-                    <button type="button" class="btn btn-default" onclick="location.href='add_artical.php?boardid=<?php echo $_GET["boardid"]; ?>'" style="background-color: #ff7474; color: black; font-size:15px; position:relative;">New post<img src="/images/edit.png"></button>
+                    <button type="button" class="btn btn-default" onclick="location.href='add_artical.php?boardid=<?php echo htmlspecialchars( $_GET["boardid"] ); ?>'" style="background-color: #ff7474; color: black; font-size:15px; position:relative;">New post<img src="/images/edit.png"></button>
                 <?php } ?>
+            </div>
+
+            <div style="width: 80%; margin: auto;">
+                <form id="query" class="row" action="javascript:searchQuery();">
+                    <input type="text" class="col-xs-11" style="padding: 10px; height: 35px; size: 15px;" placeholder="Search with title or name">
+                </form>
             </div>
 
             <?php include "statusColumn.php" ?>
@@ -41,9 +55,20 @@
 
                 $boardid = getData( $con , $_GET["boardid"] );
 
-                // find all post in gaming
-                $sql = "select userid , postid , title , date_time as time from post where boardid = '" . $boardid . "' order by time DESC";
-                $query = mysqli_query( $con , $sql );
+                $searchCheck = false;
+                if ( isset( $_GET["search"] ) ) {
+                    $search = getData( $con , $_GET["search"] );
+                    $searchCheck = true;
+                    $sql = "SELECT DISTINCT p.userid , p.postid , p.title , p.date_time as time from post as p , account as a where p.boardid = '" . $boardid . "' and p.userid = a.userid ";
+                    $sql .= "AND ( p.title LIKE '%" . $search . "%' OR a.username LIKE '%" . $search . "%' )";
+                    $sql .= "order by time DESC";
+                    $query = mysqli_query( $con , $sql );
+                }
+                else {
+                    // find all post in gaming
+                    $sql = "select userid , postid , title , date_time as time from post where boardid = '" . $boardid . "' order by time DESC";
+                    $query = mysqli_query( $con , $sql );
+                }
 
                 if ( $query->num_rows > 0 && boardidValid( $boardid ) ) { // post found
                     while ( $row = $query->fetch_assoc() ) { // show all post
@@ -61,9 +86,13 @@
 
                 }
                 else {
-                    if ( boardidValid( $boardid ) ) {
+                    if ( boardidValid( $boardid ) && !$searchCheck ) {
              ?>
                         <span style="font-size: 20px; font-style: oblique;">There is no post yet!!<br></span>
+            <?php
+                    }
+                    else if ( boardidValid( $boardid ) && $searchCheck ) {
+             ?>
             <?php
                     }
                     else {
