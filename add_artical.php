@@ -68,7 +68,7 @@
                         if ( !$query ) {
                             $postErr = "Something went wrong , please try again...<br>";
                         }
-                        else header("Location: /displayBoard.php?boardid=" . $boardid);
+                        else header("Location: /displayPost.php?postid=" . $postid);
                     }
                 }
 
@@ -76,7 +76,7 @@
             }
             function convertNewLineBack( $data ) {
                 $data = str_replace( '' , '\r' , $data ); // replace new line
-                $data = str_replace( '&#13' , '\n;' , $data ); // replace new line
+                $data = str_replace( '&#13' , '\n' , $data ); // replace new line
                 return $data;
             }
             function boardidValid( $board ) {
@@ -106,7 +106,7 @@
                 $data = htmlspecialchars( $data ); // turn &"'<> to real entity
                 $data = mysqli_real_escape_string( $con , $data );
                 $data = str_replace( '\r' , '' , $data ); // replace new line
-                $data = str_replace( '\n' , '&#13;' , $data ); // replace new line
+                $data = str_replace( '\n' , '&#13' , $data ); // replace new line
                 return $data;
             }
             function checkTitle( $title ) {
