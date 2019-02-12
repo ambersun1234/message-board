@@ -37,13 +37,13 @@
                 <li><a href="/index.php#board">BOARD</a></li> <!--jump to all board-->
             </ul>
             <ul class="nav navbar-nav navbar-left">
-                <li><a href="/displayBoard.php?boardid=Gaming">Gaming board</a></li> <!--jump to Gaming board-->
+                <li><a href="/displayBoard.php?boardid=Gaming&page=1">Gaming board</a></li> <!--jump to Gaming board-->
             </ul>
             <ul class="nav navbar-nav navbar-left">
-                <li><a href="/displayBoard.php?boardid=News">News board</a></li> <!--jump to New board-->
+                <li><a href="/displayBoard.php?boardid=News&page=1">News board</a></li> <!--jump to New board-->
             </ul>
             <ul class="nav navbar-nav navbar-left">
-                <li><a href="/displayBoard.php?boardid=Gossip">Gossip board</a></li> <!--jump to Gossip board-->
+                <li><a href="/displayBoard.php?boardid=Gossip&page=1">Gossip board</a></li> <!--jump to Gossip board-->
             </ul>
                 <link rel="stylesheet" type="text/css" href="custom.css">
                 <?php
