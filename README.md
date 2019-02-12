@@ -43,7 +43,7 @@ Sign up or Sign in to enjoy our service!!.
         ```
         to
         ```shell=1
-        <Directory /home/YOUR_USERNAME/Documents/www/>
+        <Directory /home/YOUR_USERNAME/Documents/www/message-board>
             Options FollowSymLinks
             AllowOverride None
             Require all granted
@@ -60,7 +60,7 @@ Sign up or Sign in to enjoy our service!!.
         ```
         to
         ```shell=1
-        DocumentRoot /home/YOUR_USERNAME/Documents/www/
+        DocumentRoot /home/YOUR_USERNAME/Documents/www/message-board
         ```
         save and exit and do
         ```shell=1
@@ -119,3 +119,5 @@ Sign up or Sign in to enjoy our service!!.
     + account center
     + ![](https://i.imgur.com/depSOWA.png)
     + ![](https://i.imgur.com/P30U8jM.png)
+    + post
+    + ![](https://i.imgur.com/FSWeDPJ.png)
